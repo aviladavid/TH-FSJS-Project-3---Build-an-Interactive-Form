@@ -62,19 +62,17 @@ When a user unchecks an activity, make sure that competing activities are no lon
 As a user selects activities, a running total should display below the list of check-boxes. For 
 example, if the user selects 'Main Conference', then Total = $200 should appear. If they add one 
 workshop, the total should change to $300. */
-$('.activities input').change(() => {
-    if ($('input[name="js-frameworks"]':checked)) {
-    	console.log('js-frameworks is checked');
-        $('input[name="express"]').attr('disabled', 'true');
-    } else if ($('input[name="express"]:checked')) {
-    	console.log('express is checked');
-        $('input[name="js-frameworks"]').attr('disabled', 'true');
+$('.activities').change(() => {
+    if ($('input[name="js-frameworks"').prop('checked')) {
+        console.log('js-frameworks is checked');
+        $('input[name|="express"]').attr('disabled', 'true');
+    } else if ($('input[name|="express"]').prop('checked')) {
+        console.log('express is checked');
+        $('input[name|="js-frameworks"]').attr('disabled', 'true');
+    } else {
+        $('input[name|="express"]').removeAttr('disabled');
+        $('input[name|="js-frameworks"]').removeAttr('disabled');
     }
-
-    // else {
-    //     $('input[name="express"]').removeAttr('disabled');
-    //     $('input[name="js-frameworks"]').removeAttr('disabled');
-    // }
 });
 
 /* PRICE CALCULATOR */
