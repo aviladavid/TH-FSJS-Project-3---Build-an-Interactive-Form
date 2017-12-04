@@ -63,66 +63,35 @@ As a user selects activities, a running total should display below the list of c
 example, if the user selects 'Main Conference', then Total = $200 should appear. If they add one 
 workshop, the total should change to $300. */
 
-/*const activitySelection = (activity) => {
+/* GROUPING ACTIVITIES BY CONFLICTING GROUPS */
+$('input[name="js-frameworks"]').addClass('conflicting-group-A');
+$('input[name="express"]').addClass('conflicting-group-A');
+$('input[name="js-libs"').addClass('conflicting-group-B');
+$('input[name|="node"]').addClass('conflicting-group-B');
 
-    if (activity.attr('[name="js-frameworks"]')) {
-        if (activity.prop('checked')) {
-            $('input[name="express"]').attr('disabled', 'true');
-        } else if (activity.prop('checked') === false) {
-            $('input[name="express"]').attr('disabled', 'false');
-        }
+/* CONFLICTING GROUP A, TUESDAY 9-12: js-frameworks and express */
+$('.conflicting-group-A').change(() => {
+    if ($('input[name="js-frameworks"]').prop('checked')) {
+        $('input[name="express"]').attr('disabled', 'true');
+    } else if ($('input[name="express"]').prop('checked')) {
+        $('input[name="js-frameworks"]').attr('disabled', 'true');
+    } else {
+    	$('input[name="js-frameworks"]').removeAttr('disabled');
+    	$('input[name="express"]').removeAttr('disabled');
     }
-    if (activity.attr('[name="express"]')) {
-        if (activity.prop('checked')) {
-            $('input[name="js-frameworks"]').attr('disabled', 'true');
-        } else if (activity.prop('checked') === false) {
-            $('input[name="js-frameworks"]').attr('disabled', 'false');
-        }
-    }
-}*/
-
-
-$('.activities').change((e) => {
-    let $target = $(e.target);
-    console.log('Event target is:');
-    console.log($target);
-    // activitySelection($target);
-    if ($target.attr('[name="js-frameworks"]')) {
-        if ($target.prop('checked')) {
-            $('input[name="express"]').attr('disabled', 'true');
-        } else if ($target.prop('checked') === false) {
-            $('input[name="express"]').attr('disabled', 'false');
-        }
-    }
-    if ($target.attr('[name="express"]')) {
-        if ($target.prop('checked')) {
-            $('input[name="js-frameworks"]').attr('disabled', 'true');
-        } else if ($target.prop('checked') === false) {
-            $('input[name="js-frameworks"]').attr('disabled', 'false');
-        }
-    }
-
 });
 
-// $('.activities').change(() => {
-//     if ($('input[name="js-frameworks"]').prop('checked')) {
-//         $('input[name="express"]').attr('disabled', 'true');
-//     } else if ($('input[name="js-frameworks"').prop('checked') === false) {
-//         $('input[name|="express"]').removeAttr('disabled');
-//     } else if ($('input[name="express"]').prop('checked')) {
-//         $('input[name="js-frameworks"]').attr('disabled', 'true');
-//     } else if ($('input[name="express"]').prop('checked') === false) {
-//         $('input[name|="js-frameworks"]').removeAttr('disabled');
-//     } else if ($('input[name="js-libs"').prop('checked')) {
-//         $('input[name="node"]').attr('disabled', 'true');
-//     } else if ($('input[name="js-libs"]').prop('checked') === false) {
-//         $('input[name|="node"]').removeAttr('disabled');
-//     } else if ($('input[name="node"').prop('checked')) {
-//         $('input[name="js-libs"]').attr('disabled', 'true');
-//     } else if ($('input[name="node"').prop('checked') === false){
-//         $('input[name|="js-libs"]').removeAttr('disabled');
-//     }
-// });
+/* CONFLICTING GROUP B, TUESDAY 1-16: js-libs and node */
+$('.conflicting-group-B').change(() => {
+    if ($('input[name="js-libs"]').prop('checked')) {
+        $('input[name="node"]').attr('disabled', 'true');
+    } else if ($('input[name="node"]').prop('checked')) {
+        $('input[name="js-libs"]').attr('disabled', 'true');
+    } else {
+    	$('input[name="js-libs"]').removeAttr('disabled');
+    	$('input[name="node"]').removeAttr('disabled');
+    }
+});
 
 /* PRICE CALCULATOR */
 let eventPriceList = [
