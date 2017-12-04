@@ -73,11 +73,15 @@ $('input[name|="node"]').addClass('conflicting-group-B');
 $('.conflicting-group-A').change(() => {
     if ($('input[name="js-frameworks"]').prop('checked')) {
         $('input[name="express"]').attr('disabled', 'true');
+        $('input[name="express"]').parent().css('color', '#c1deeb');
     } else if ($('input[name="express"]').prop('checked')) {
         $('input[name="js-frameworks"]').attr('disabled', 'true');
+        $('input[name="js-frameworks"]').parent().css('color', '#c1deeb');
     } else {
     	$('input[name="js-frameworks"]').removeAttr('disabled');
+    	$('input[name="js-frameworks"]').parent().css('color', '#000');
     	$('input[name="express"]').removeAttr('disabled');
+    	$('input[name="express"]').parent().css('color', '#000'); 
     }
 });
 
@@ -85,11 +89,15 @@ $('.conflicting-group-A').change(() => {
 $('.conflicting-group-B').change(() => {
     if ($('input[name="js-libs"]').prop('checked')) {
         $('input[name="node"]').attr('disabled', 'true');
+        $('input[name="node"]').parent().css('color', '#c1deeb');
     } else if ($('input[name="node"]').prop('checked')) {
         $('input[name="js-libs"]').attr('disabled', 'true');
+        $('input[name="js-libs"]').parent().css('color', '#c1deeb');
     } else {
     	$('input[name="js-libs"]').removeAttr('disabled');
+    	$('input[name="js-libs"]').parent().css('color', '#000');
     	$('input[name="node"]').removeAttr('disabled');
+    	$('input[name="node"]').parent().css('color', '#000');
     }
 });
 

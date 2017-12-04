@@ -113,6 +113,9 @@ button:hover {
 	background: #184c62;
 }
 
+.conflicting {
+	color:lightgrey;
+}
 /* ================================= 
   Page Styles
 ==================================== */
