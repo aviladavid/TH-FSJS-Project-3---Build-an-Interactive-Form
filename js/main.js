@@ -54,14 +54,9 @@ $('#design').change(() => {
     }
 });
 
-/* STEP #4 --> REGISTER FOR ACTIVITIES SECTION. Some events are the same time as others. If the 
-user selects a workshop, don't allow the selection of another workshop a the same date and time --
-You should disable the check-box and visually indicate that the workshop in the competing time 
-slot is not available.
-When a user unchecks an activity, make sure that competing activities are no longer disabled.
-As a user selects activities, a running total should display below the list of check-boxes. For 
-example, if the user selects 'Main Conference', then Total = $200 should appear. If they add one 
-workshop, the total should change to $300. */
+/* STEP #4 --> REGISTER FOR ACTIVITIES SECTION. Some events are the same time as others. Activity 
+overlap is prevented by disabling the check-box and visually indicating that the workshop in the 
+conflicting time slot is not available. As a user selects activities, a running total is displayed below the list of activities. */
 
 /* GROUPING ACTIVITIES BY CONFLICTING GROUPS */
 $('input[name="js-frameworks"]').addClass('conflicting-group-A');
@@ -78,10 +73,10 @@ $('.conflicting-group-A').change(() => {
         $('input[name="js-frameworks"]').attr('disabled', 'true');
         $('input[name="js-frameworks"]').parent().css('color', '#c1deeb');
     } else {
-    	$('input[name="js-frameworks"]').removeAttr('disabled');
-    	$('input[name="js-frameworks"]').parent().css('color', '#000');
-    	$('input[name="express"]').removeAttr('disabled');
-    	$('input[name="express"]').parent().css('color', '#000'); 
+        $('input[name="js-frameworks"]').removeAttr('disabled');
+        $('input[name="js-frameworks"]').parent().css('color', '#000');
+        $('input[name="express"]').removeAttr('disabled');
+        $('input[name="express"]').parent().css('color', '#000');
     }
 });
 
@@ -94,14 +89,16 @@ $('.conflicting-group-B').change(() => {
         $('input[name="js-libs"]').attr('disabled', 'true');
         $('input[name="js-libs"]').parent().css('color', '#c1deeb');
     } else {
-    	$('input[name="js-libs"]').removeAttr('disabled');
-    	$('input[name="js-libs"]').parent().css('color', '#000');
-    	$('input[name="node"]').removeAttr('disabled');
-    	$('input[name="node"]').parent().css('color', '#000');
+        $('input[name="js-libs"]').removeAttr('disabled');
+        $('input[name="js-libs"]').parent().css('color', '#000');
+        $('input[name="node"]').removeAttr('disabled');
+        $('input[name="node"]').parent().css('color', '#000');
     }
 });
 
-/* PRICE CALCULATOR */
+/* NON-CONFLICTING ACTIVITIES: all, build-tool, npm  */
+
+/* PRICE LIST */
 let eventPriceList = [
     { activity: 'all', price: 200 },
     { activity: 'js-frameworks', price: 100 },
@@ -111,6 +108,30 @@ let eventPriceList = [
     { activity: 'build-tools', price: 100 },
     { activity: 'npm', price: 100 }
 ];
+/* PRICE TAG CALCULATOR */
+let priceTag = document.createElement('h3');
+$(priceTag).attr('id', 'price-tag');
+$("#price-tag").hide();
+$('.activities').append(priceTag);
+
+$('.activities').change(() => {
+    let activitySelection = $('.activities input:checked');
+    let totalCost = 0;
+    for (let i = 0; i < activitySelection.length; i++) {
+        for (let j = 0; j < eventPriceList.length; j++) {
+            if (activitySelection[i].name === eventPriceList[j].activity) {
+                totalCost += eventPriceList[j].price;
+            }
+        }
+    }
+    priceTag.innerText = 'Total = $' + totalCost;
+    if (activitySelection.length > 0) {
+        $("#price-tag").fadeIn(500);
+    } else {
+        $("#price-tag").fadeOut(500);
+    }
+});
+
 
 /* STEP #5 --> PAYMENT INFO SECTION: Display payment sections based on the payment option selected
 Credit Card payment option should be selected by default. Display the #credit-card div and hide the
