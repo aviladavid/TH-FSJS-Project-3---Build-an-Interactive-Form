@@ -96,9 +96,7 @@ $('.conflicting-group-B').change(() => {
     }
 });
 
-/* NON-CONFLICTING ACTIVITIES: all, build-tool, npm  */
-
-/* PRICE LIST */
+/* ACTIVITY PRICE LIST */
 let eventPriceList = [
     { activity: 'all', price: 200 },
     { activity: 'js-frameworks', price: 100 },
@@ -108,6 +106,7 @@ let eventPriceList = [
     { activity: 'build-tools', price: 100 },
     { activity: 'npm', price: 100 }
 ];
+
 /* PRICE TAG CALCULATOR */
 let priceTag = document.createElement('h3');
 $(priceTag).attr('id', 'price-tag');
@@ -138,6 +137,27 @@ Credit Card payment option should be selected by default. Display the #credit-ca
 'Paypal' and 'Bitcoin' information. 
 When Paypal payment option is selected, credit card and Bitcoin should be hidden. 
 When Bitcoin is selected, credit card and Paypal should be hidden */
+const paymentFieldset = $('#payment').parent();
+console.log(paymentFieldset[0]);
+$('#payment').change(() => {
+    if ($('#payment').val() === 'paypal') {
+        $('paymentFieldset div:nth-last-child(2)').fadeIn();
+        $('#credit-card').hide();
+        $('paymentFieldset div:nth-last-child(1)').hide();
+
+    } else if ($('#payment').val() === 'credit_card') {
+        $('#credit-card').fadeIn();
+        $('paymentFieldset div:nth-last-child(1)').hide();
+        $('paymentFieldset div:nth-last-child(2)').hide();
+
+    } else if ($('#payment').val() === 'bitcoin') {
+        $('paymentFieldset div:nth-last-child(1)').fadeIn();
+        $('#credit-card').hide();
+        $('paymentFieldset div:nth-last-child(2)').hide();
+    }
+});
+
+
 
 /* STEP #5 --> FORM VALIDATION: if any of the following errors exists, prevent the user from 
 submitting the form:
