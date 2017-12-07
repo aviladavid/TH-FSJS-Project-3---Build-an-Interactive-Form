@@ -131,29 +131,29 @@ $('.activities').change(() => {
     }
 });
 
-
 /* STEP #5 --> PAYMENT INFO SECTION: Display payment sections based on the payment option selected
 Credit Card payment option should be selected by default. Display the #credit-card div and hide the
 'Paypal' and 'Bitcoin' information. 
 When Paypal payment option is selected, credit card and Bitcoin should be hidden. 
 When Bitcoin is selected, credit card and Paypal should be hidden */
-const paymentFieldset = $('#payment').parent();
-console.log(paymentFieldset[0]);
+
+// const paymentFieldset = $('#payment').parent();
+// console.log(paymentFieldset[0]);
 $('#payment').change(() => {
     if ($('#payment').val() === 'paypal') {
-        $('paymentFieldset div:nth-last-child(2)').fadeIn();
+        $('#payment-fieldset div:nth-last-child(2)').fadeIn();
         $('#credit-card').hide();
-        $('paymentFieldset div:nth-last-child(1)').hide();
+        $('#payment-fieldset div:nth-last-child(1)').hide();
 
     } else if ($('#payment').val() === 'credit_card') {
         $('#credit-card').fadeIn();
-        $('paymentFieldset div:nth-last-child(1)').hide();
-        $('paymentFieldset div:nth-last-child(2)').hide();
+        $('#payment-fieldset div:nth-last-child(1)').hide();
+        $('#payment-fieldset div:nth-last-child(2)').hide();
 
     } else if ($('#payment').val() === 'bitcoin') {
-        $('paymentFieldset div:nth-last-child(1)').fadeIn();
+        $('#payment-fieldset div:nth-last-child(1)').fadeIn();
         $('#credit-card').hide();
-        $('paymentFieldset div:nth-last-child(2)').hide();
+        $('#payment-fieldset div:nth-last-child(2)').hide();
     }
 });
 
