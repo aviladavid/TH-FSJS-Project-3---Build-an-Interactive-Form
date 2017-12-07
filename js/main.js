@@ -59,40 +59,40 @@ overlap is prevented by disabling the check-box and visually indicating that the
 conflicting time slot is not available. As a user selects activities, a running total is displayed below the list of activities. */
 
 /* GROUPING ACTIVITIES BY CONFLICTING GROUPS */
-$('input[name="js-frameworks"]').addClass('conflicting-group-A');
-$('input[name="express"]').addClass('conflicting-group-A');
-$('input[name="js-libs"').addClass('conflicting-group-B');
-$('input[name|="node"]').addClass('conflicting-group-B');
+$('input[id="js-frameworks"]').addClass('conflicting-group-A');
+$('input[id="express"]').addClass('conflicting-group-A');
+$('input[id="js-libs"').addClass('conflicting-group-B');
+$('input[id="node"]').addClass('conflicting-group-B');
 
 /* CONFLICTING GROUP A, TUESDAY 9-12: js-frameworks and express */
 $('.conflicting-group-A').change(() => {
-    if ($('input[name="js-frameworks"]').prop('checked')) {
-        $('input[name="express"]').attr('disabled', 'true');
-        $('input[name="express"]').parent().css('color', '#c1deeb');
-    } else if ($('input[name="express"]').prop('checked')) {
-        $('input[name="js-frameworks"]').attr('disabled', 'true');
-        $('input[name="js-frameworks"]').parent().css('color', '#c1deeb');
+    if ($('input[id="js-frameworks"]').prop('checked')) {
+        $('input[id="express"]').attr('disabled', 'true');
+        $('input[id="express"]').parent().css('color', '#c1deeb');
+    } else if ($('input[id="express"]').prop('checked')) {
+        $('input[id="js-frameworks"]').attr('disabled', 'true');
+        $('input[id="js-frameworks"]').parent().css('color', '#c1deeb');
     } else {
-        $('input[name="js-frameworks"]').removeAttr('disabled');
-        $('input[name="js-frameworks"]').parent().css('color', '#000');
-        $('input[name="express"]').removeAttr('disabled');
-        $('input[name="express"]').parent().css('color', '#000');
+        $('input[id="js-frameworks"]').removeAttr('disabled');
+        $('input[id="js-frameworks"]').parent().css('color', '#000');
+        $('input[id="express"]').removeAttr('disabled');
+        $('input[id="express"]').parent().css('color', '#000');
     }
 });
 
 /* CONFLICTING GROUP B, TUESDAY 1-16: js-libs and node */
 $('.conflicting-group-B').change(() => {
-    if ($('input[name="js-libs"]').prop('checked')) {
-        $('input[name="node"]').attr('disabled', 'true');
-        $('input[name="node"]').parent().css('color', '#c1deeb');
-    } else if ($('input[name="node"]').prop('checked')) {
-        $('input[name="js-libs"]').attr('disabled', 'true');
-        $('input[name="js-libs"]').parent().css('color', '#c1deeb');
+    if ($('input[id="js-libs"]').prop('checked')) {
+        $('input[id="node"]').attr('disabled', 'true');
+        $('input[id="node"]').parent().css('color', '#c1deeb');
+    } else if ($('input[id="node"]').prop('checked')) {
+        $('input[id="js-libs"]').attr('disabled', 'true');
+        $('input[id="js-libs"]').parent().css('color', '#c1deeb');
     } else {
-        $('input[name="js-libs"]').removeAttr('disabled');
-        $('input[name="js-libs"]').parent().css('color', '#000');
-        $('input[name="node"]').removeAttr('disabled');
-        $('input[name="node"]').parent().css('color', '#000');
+        $('input[id="js-libs"]').removeAttr('disabled');
+        $('input[id="js-libs"]').parent().css('color', '#000');
+        $('input[id="node"]').removeAttr('disabled');
+        $('input[id="node"]').parent().css('color', '#000');
     }
 });
 
@@ -118,7 +118,7 @@ $('.activities').change(() => {
     let totalCost = 0;
     for (let i = 0; i < activitySelection.length; i++) {
         for (let j = 0; j < eventPriceList.length; j++) {
-            if (activitySelection[i].name === eventPriceList[j].activity) {
+            if (activitySelection[i].id === eventPriceList[j].activity) {
                 totalCost += eventPriceList[j].price;
             }
         }
@@ -157,21 +157,24 @@ $('#payment').change(() => {
     }
 });
 
-/* STEP #5 --> FORM VALIDATION: if any of the following errors exists, prevent the user from 
+/* STEP #6 --> FORM VALIDATION: if any of the following errors exists, prevent the user from 
 submitting the form:
  * Name field can't be blank
  * Email must be a validly formatted email address (no need to check if its real)
  * Must select at least one check-box under the 'Register for Activities' section
  * If the selected payment option is credit card, make sure the user has provided a credit card 
  number (between 13 and 16 numbers), a zip code (5 digits) and a CVV code (3 digits)*/
-
-/* STEP #6 --> FORM VALIDATION MESSAGES: Provide some kind of indication when there is a
+$.validate({
+  form : '#registration',
+  modules : ''
+});
+/* STEP #6.1 --> FORM VALIDATION MESSAGES: Provide some kind of indication when there is a
 validation error. For example, the field borders could turn red, or a message could appear near 
 the field or at the top of the form. 
 There should be an error indication for the Name field, Email field, Register for Activities 
 check-boxes, credit card number, zip code and CVV.*/
 
-/* STEP #6 --> When JavaScript is switched off or unavailable, the user should still have access
+/* STEP #7 --> When JavaScript is switched off or unavailable, the user should still have access
 to all form fields and payment information. For example, the 'Other' text field in the 'Jobs 
 Role' menu should be visible on the page when JavaScript is switched off, and all the payment 
 methods should be visible. */
