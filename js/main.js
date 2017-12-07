@@ -157,8 +157,6 @@ $('#payment').change(() => {
     }
 });
 
-
-
 /* STEP #5 --> FORM VALIDATION: if any of the following errors exists, prevent the user from 
 submitting the form:
  * Name field can't be blank
