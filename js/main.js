@@ -59,40 +59,40 @@ overlap is prevented by disabling the check-box and visually indicating that the
 conflicting time slot is not available. As a user selects activities, a running total is displayed below the list of activities. */
 
 /* GROUPING ACTIVITIES BY CONFLICTING GROUPS */
-$('input[id="js-frameworks"]').addClass('conflicting-group-A');
-$('input[id="express"]').addClass('conflicting-group-A');
-$('input[id="js-libs"').addClass('conflicting-group-B');
-$('input[id="node"]').addClass('conflicting-group-B');
+$('input[name="js-frameworks"]').addClass('conflicting-group-A');
+$('input[name="express"]').addClass('conflicting-group-A');
+$('input[name="js-libs"').addClass('conflicting-group-B');
+$('input[name="node"]').addClass('conflicting-group-B');
 
 /* CONFLICTING GROUP A, TUESDAY 9-12: js-frameworks and express */
 $('.conflicting-group-A').change(() => {
-    if ($('input[id="js-frameworks"]').prop('checked')) {
-        $('input[id="express"]').attr('disabled', 'true');
-        $('input[id="express"]').parent().css('color', '#c1deeb');
-    } else if ($('input[id="express"]').prop('checked')) {
-        $('input[id="js-frameworks"]').attr('disabled', 'true');
-        $('input[id="js-frameworks"]').parent().css('color', '#c1deeb');
+    if ($('input[name="js-frameworks"]').prop('checked')) {
+        $('input[name="express"]').attr('disabled', 'true');
+        $('input[name="express"]').parent().css('color', '#c1deeb');
+    } else if ($('input[name="express"]').prop('checked')) {
+        $('input[name="js-frameworks"]').attr('disabled', 'true');
+        $('input[name="js-frameworks"]').parent().css('color', '#c1deeb');
     } else {
-        $('input[id="js-frameworks"]').removeAttr('disabled');
-        $('input[id="js-frameworks"]').parent().css('color', '#000');
-        $('input[id="express"]').removeAttr('disabled');
-        $('input[id="express"]').parent().css('color', '#000');
+        $('input[name="js-frameworks"]').removeAttr('disabled');
+        $('input[name="js-frameworks"]').parent().css('color', '#000');
+        $('input[name="express"]').removeAttr('disabled');
+        $('input[name="express"]').parent().css('color', '#000');
     }
 });
 
 /* CONFLICTING GROUP B, TUESDAY 1-16: js-libs and node */
 $('.conflicting-group-B').change(() => {
-    if ($('input[id="js-libs"]').prop('checked')) {
-        $('input[id="node"]').attr('disabled', 'true');
-        $('input[id="node"]').parent().css('color', '#c1deeb');
-    } else if ($('input[id="node"]').prop('checked')) {
-        $('input[id="js-libs"]').attr('disabled', 'true');
-        $('input[id="js-libs"]').parent().css('color', '#c1deeb');
+    if ($('input[name="js-libs"]').prop('checked')) {
+        $('input[name="node"]').attr('disabled', 'true');
+        $('input[name="node"]').parent().css('color', '#c1deeb');
+    } else if ($('input[name="node"]').prop('checked')) {
+        $('input[name="js-libs"]').attr('disabled', 'true');
+        $('input[name="js-libs"]').parent().css('color', '#c1deeb');
     } else {
-        $('input[id="js-libs"]').removeAttr('disabled');
-        $('input[id="js-libs"]').parent().css('color', '#000');
-        $('input[id="node"]').removeAttr('disabled');
-        $('input[id="node"]').parent().css('color', '#000');
+        $('input[name="js-libs"]').removeAttr('disabled');
+        $('input[name="js-libs"]').parent().css('color', '#000');
+        $('input[name="node"]').removeAttr('disabled');
+        $('input[name="node"]').parent().css('color', '#000');
     }
 });
 
@@ -118,7 +118,7 @@ $('.activities').change(() => {
     let totalCost = 0;
     for (let i = 0; i < activitySelection.length; i++) {
         for (let j = 0; j < eventPriceList.length; j++) {
-            if (activitySelection[i].id === eventPriceList[j].activity) {
+            if (activitySelection[i].name === eventPriceList[j].activity) {
                 totalCost += eventPriceList[j].price;
             }
         }
@@ -145,7 +145,7 @@ $('#payment').change(() => {
         $('#credit-card').hide();
         $('#payment-fieldset div:nth-last-child(1)').hide();
 
-    } else if ($('#payment').val() === 'credit_card') {
+    } else if ($('#payment').val() === 'credit_card' || $('#payment').val() === 'select_method') {
         $('#credit-card').fadeIn();
         $('#payment-fieldset div:nth-last-child(1)').hide();
         $('#payment-fieldset div:nth-last-child(2)').hide();
@@ -164,10 +164,7 @@ submitting the form:
  * Must select at least one check-box under the 'Register for Activities' section
  * If the selected payment option is credit card, make sure the user has provided a credit card 
  number (between 13 and 16 numbers), a zip code (5 digits) and a CVV code (3 digits)*/
-$.validate({
-  form : '#registration',
-  modules : ''
-});
+
 /* STEP #6.1 --> FORM VALIDATION MESSAGES: Provide some kind of indication when there is a
 validation error. For example, the field borders could turn red, or a message could appear near 
 the field or at the top of the form. 
