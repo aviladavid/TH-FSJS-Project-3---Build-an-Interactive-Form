@@ -96,6 +96,15 @@ input:focus {
 	transition: border-color .4s, background-color .4s;
 }
 
+.hasError {
+	border-color: tomato;
+	/*border-color: rgb(241, 168, 153);*/
+}
+
+.validated {
+	border-color: lime;
+}
+
 input[type="checkbox"],
 input[type="radio"] {
 	display: inline-block;

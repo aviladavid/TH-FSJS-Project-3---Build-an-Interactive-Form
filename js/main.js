@@ -1,18 +1,31 @@
-/*
-    TreeHouse Techdegree Full Stack JavaScript
-    Project 3: Build an Interactive Form
+/****************************************************************************************
+ *   TreeHouse Techdegree Full Stack JavaScript                                         *
+ *   Project 3: Build an Interactive Form                                               *
+ *                                                                                      *
+ *                       ***** AIMING FOR EXCEEDS EXPECTATIONS *****                    *
+ *                                                                                      *
+ * WHAT IT DOES:                                                                        *
+ *   This JavaScript code is intended to provide interactivity to a web form when       *
+ *   registering for a conference.                                                      *
+ ****************************************************************************************/
 
-                        ***** AIMING FOR EXCEEDS EXPECTATIONS *****
+/****************
+ * PLACEHOLDERS *
+ ****************/
+$('#name').attr('placeholder', 'Name');
+$('#mail').attr('placeholder', 'yourEmail@email.com');
+$('#cc-num').attr('placeholder', '13 to 16 digits long');
+$('#cvv').attr('placeholder', 'i.e. 123');
+$('#zip').attr('placeholder', 'i.e. 12345');
 
-WHAT IT DOES:
-    This JavaScript code is intended to provide interactivity to a web form when registering 
-    for a conference. 
-*/
-
-/* STEP #1 --> FOCUS ON FISRT TEXT FIELD ON PAGE LOAD */
+/******************************************
+ * FOCUS ON FISRT TEXT FIELD ON PAGE LOAD *
+ ******************************************/
 $('#name').focus();
 
-/* STEP #2 --> SHOW/HIDE USER DEFINED JOB-ROLE INPUT FIELD */
+/***********************************************
+ * SHOW/HIDE USER DEFINED JOB-ROLE INPUT FIELD *
+ ***********************************************/
 $("#other-title").hide();
 $("#title").change(() => {
     if ($("#title").val() === "other") {
@@ -22,9 +35,11 @@ $("#title").change(() => {
     }
 });
 
-/* STEP #3 --> T-SHIRT SECTION. FILTER OUT COLORS BASED ON SELECTED THEME. 
-'Theme - JS Puns'--> 'Cornflower Blue', 'Dark Slate Grey' and 'Gold'. 
-'Theme - I ♥ JS'--> 'Tomato', 'Steel Blue' and 'Dim Grey'*/
+/*********************************************************************************
+ * T-SHIRT SECTION: Color selection is filtered out based on the selected theme. * 
+ * 'Theme - JS Puns'--> 'Cornflower Blue', 'Dark Slate Grey' and 'Gold'.         *
+ * 'Theme - I ♥ JS'--> 'Tomato', 'Steel Blue' and 'Dim Grey'                     * 
+ *********************************************************************************/
 $('#color').hide();
 $('label[for="color"]').hide();
 $('#design').change(() => {
@@ -54,9 +69,12 @@ $('#design').change(() => {
     }
 });
 
-/* STEP #4 --> REGISTER FOR ACTIVITIES SECTION. Some events are the same time as others. Activity 
-overlap is prevented by disabling the check-box and visually indicating that the workshop in the 
-conflicting time slot is not available. As a user selects activities, a running total is displayed below the list of activities. */
+/**************************************************************************************************
+ * REGISTER FOR ACTIVITIES SECTION. Some events are the same time as others. Activity             *
+ * overlap is prevented by disabling the check-box and visually indicating that the workshop in   *
+ * the conflicting time slot is not available. As a user selects activities, a running total      *
+ * is displayed below the list of activities.                                                     *
+ *************************************************************************************************/
 
 /* GROUPING ACTIVITIES BY CONFLICTING GROUPS */
 $('input[name="js-frameworks"]').addClass('conflicting-group-A');
@@ -131,11 +149,10 @@ $('.activities').change(() => {
     }
 });
 
-/* STEP #5 --> PAYMENT INFO SECTION: Display payment sections based on the payment option selected
-Credit Card payment option should be selected by default. Display the #credit-card div and hide the
-'Paypal' and 'Bitcoin' information. 
-When Paypal payment option is selected, credit card and Bitcoin should be hidden. 
-When Bitcoin is selected, credit card and Paypal should be hidden */
+/************************************************************************************************
+ * PAYMENT INFO SECTION: Payment sections are displayed based on the selected payment option.   *
+ * Credit Card payment option is selected by default.                                           *
+ ************************************************************************************************/
 
 // const paymentFieldset = $('#payment').parent();
 // console.log(paymentFieldset[0]);
@@ -157,13 +174,47 @@ $('#payment').change(() => {
     }
 });
 
-/* STEP #6 --> FORM VALIDATION: if any of the following errors exists, prevent the user from 
-submitting the form:
- * Name field can't be blank
- * Email must be a validly formatted email address (no need to check if its real)
- * Must select at least one check-box under the 'Register for Activities' section
- * If the selected payment option is credit card, make sure the user has provided a credit card 
- number (between 13 and 16 numbers), a zip code (5 digits) and a CVV code (3 digits)*/
+/**************************************************************************************** 
+ * FORM VALIDATION: if any of the following errors exists, the user will be prevented   *
+ * from submitting the form.                                                            *
+ * Restrictions:                                                                        *
+ *      Name field can't be blank                                                       *
+ *      Email must be a validly formatted email address.                                *
+ *      At least one activity must be selected.                                         *
+ *      If the selected payment option is credit card, the following must be provided:  *
+ *          Credit card number (between 13 and 16 digits)                               *
+ *          Zip code (5 digits)                                                         *
+ *          CVV code (3 digits)                                                         *
+ ****************************************************************************************/
+const generateErrorMessage = (targetElement, errorMessage, customClassName) => {
+    targetElement.after("<span class='error-message'>" + errorMessage + "</span>");
+    $('.error-message').addClass(customClassName); // use this class for removing errors when fixed
+    $('.error-message').css({ marginTop: 0, marginBottom: 4, paddingTop: 2, paddingBottom: 2, paddingLeft: 18, border: '1px solid #f1a899', color: '#5f3f3f', display: 'block', background: '#fddfdf', borderRadius: 10 }).show();
+}
+
+$('#name').focusout(() => {
+    let $nameField = $('#name');
+    let $nameFieldValue = $('#name').val();
+    if ($nameFieldValue.length < 3) {
+        if ($('.name-error').length) {
+            $('.name-error').effect("shake");
+            // $nameField.removeClass('validated');
+        } else {
+            generateErrorMessage($nameField, 'Name field cannot be empty and must contain at least 3 characters.', 'name-error');
+            $nameField.addClass('hasError');
+        }
+        // $('.name-error').effect("shake");
+
+    } else {
+        $('.name-error').remove();
+        $nameField.removeClass('hasError');
+        // $nameField.addClass('validated');
+    }
+});
+
+
+
+
 
 /* STEP #6.1 --> FORM VALIDATION MESSAGES: Provide some kind of indication when there is a
 validation error. For example, the field borders could turn red, or a message could appear near 
