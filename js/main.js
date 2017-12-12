@@ -189,26 +189,101 @@ $('#payment').change(() => {
 const generateErrorMessage = (targetElement, errorMessage, customClassName) => {
     targetElement.after("<span class='error-message'>" + errorMessage + "</span>");
     $('.error-message').addClass(customClassName); // use this class for removing errors when fixed
-    $('.error-message').css({ marginTop: 0, marginBottom: 4, paddingTop: 2, paddingBottom: 2, paddingLeft: 18, border: '1px solid #f1a899', color: '#5f3f3f', display: 'block', background: '#fddfdf', borderRadius: 10 }).show();
+    $('.error-message').css({marginBottom: 4, paddingTop: 2, paddingBottom: 2, paddingLeft: 15, border: '1px solid #f1a899', color: '#5f3f3f', display: 'block', background: '#fddfdf', borderRadius: 5, boxShadow: '5px 5px 10px grey'}).show();
 }
 
+/* NAME VALIDATION */
+let nameCheck = (userName) => {
+    let regex = /^[a-zA-Z ]{2,30}$/;
+    return regex.test(userName);
+}
+/* Name errors tested: 
+    CASE 1- Name field empty - class='name-error1'
+    CASE 2- Name less than 2 characters - class='name-error2'
+    CASE 3- Name longer than 30 characters - class='name-error3'
+    CASE 4- Name contains numbers or special characters - class='name-error4'
+*/
 $('#name').focusout(() => {
     let $nameField = $('#name');
     let $nameFieldValue = $('#name').val();
-    if ($nameFieldValue.length < 3) {
-        if ($('.name-error').length) {
-            $('.name-error').effect("shake");
-            // $nameField.removeClass('validated');
+    let userName = nameCheck($nameFieldValue);
+    if ($nameFieldValue.length === 0 && userName === false) { //CASE 1
+        if ($('.name-error1').length) {
+            $('.name-error1').effect('shake');
         } else {
-            generateErrorMessage($nameField, 'Name field cannot be empty and must contain at least 3 characters.', 'name-error');
-            $nameField.addClass('hasError');
+            generateErrorMessage($nameField, 'Oops! looks like you forgot to tell us your name.', 'name-error1');
+            $('.name-error2').remove();
+            $('.name-error3').remove();
+            $('.name-error4').remove();
+            if ($nameField.hasClass('hasError') === false) {
+                $nameField.addClass('hasError');
+            }
         }
-        // $('.name-error').effect("shake");
-
-    } else {
-        $('.name-error').remove();
+    } else if ($nameFieldValue.length < 2 && userName === false) { // CASE 2
+        if ($('.name-error2').length) {
+            $('.name-error2').effect('shake');
+        } else {
+            generateErrorMessage($nameField, 'Sorry! we can only register names containing between 2 and 30 characters!', 'name-error2');
+            $('.name-error1').remove();
+            $('.name-error3').remove();
+            $('.name-error4').remove();
+            if ($nameField.hasClass('hasError') === false) {
+                $nameField.addClass('hasError');
+            }
+        }
+    } else if ($nameFieldValue.length > 30 && userName === false) { // CASE 3
+        if ($('.name-error3').length) {
+            $('.name-error3').effect('shake');
+        } else {
+            generateErrorMessage($nameField, 'Sorry! we are unable to register names longer than 30 characters.', 'name-error3');
+            $('.name-error1').remove();
+            $('.name-error2').remove();
+            $('.name-error4').remove();
+            if ($nameField.hasClass('hasError') === false) {
+                $nameField.addClass('hasError');
+            }
+        }
+    } else if (userName === false) { // CASE 4
+        if ($('.name-error4').length) {
+            $('.name-error4').effect('shake');
+        } else {
+            generateErrorMessage($nameField, 'Sorry! we cannot register names containing numbers or special characters (i.e. +, -, &, *, /, $, etc.).', 'name-error4');
+            $('.name-error1').remove();
+            $('.name-error2').remove();
+            $('.name-error3').remove();
+            if ($nameField.hasClass('hasError') === false) {
+                $nameField.addClass('hasError');
+            }
+        }
+    } else if (userName) { // VALIDATED
+        $('.name-error1').remove();
+        $('.name-error2').remove();
+        $('.name-error3').remove();
+        $('.name-error4').remove();
         $nameField.removeClass('hasError');
-        // $nameField.addClass('validated');
+    }
+});
+
+/* EMAIL VALIDATION */
+let emailCheck = ((email) => {
+    let regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return regex.test(email);
+});
+
+$('#mail').keyup(() => {
+    let $emailField = $('#mail');
+    let $emailFieldValue = $('#mail').val();
+    let userEmail = emailCheck($emailFieldValue);
+    if (userEmail) {
+        $('.email-error').remove();
+        $emailField.removeClass('hasError');
+    } else {
+        if ($('.email-error').length) {
+
+        } else {
+            generateErrorMessage($emailField, 'Please enter your email in the following format: yourEmail@email.com.', 'email-error');
+            $emailField.addClass('hasError');
+        }
     }
 });
 
