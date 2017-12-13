@@ -7,66 +7,74 @@
  * WHAT IT DOES:                                                                        *
  *   This JavaScript code is intended to provide interactivity to a web form.           *
  ****************************************************************************************/
+document.addEventListener('DOMContentLoaded', () => {
+    /****************
+     * PLACEHOLDERS *
+     ****************/
+    $('#name').attr('placeholder', 'Name');
+    $('#mail').attr('placeholder', 'yourEmail@email.com');
+    $('#cc-num').attr('placeholder', 'Must be 13 to 16 digits long');
+    $('#cvv').attr('placeholder', 'i.e. 123');
+    $('#zip').attr('placeholder', 'i.e. 12345');
 
-/****************
- * PLACEHOLDERS *
- ****************/
-$('#name').attr('placeholder', 'Name');
-$('#mail').attr('placeholder', 'yourEmail@email.com');
-$('#cc-num').attr('placeholder', '13 to 16 digits long');
-$('#cvv').attr('placeholder', 'i.e. 123');
-$('#zip').attr('placeholder', 'i.e. 12345');
+    /******************************************
+     * FOCUS ON FISRT TEXT FIELD ON PAGE LOAD *
+     ******************************************/
+    $('#name').focus();
 
-/******************************************
- * FOCUS ON FISRT TEXT FIELD ON PAGE LOAD *
- ******************************************/
-$('#name').focus();
+    /*************************
+     * FORM SUBMIT BEHAVIOUR *
+     *************************/
+    const $form = $('#registration');
+    $form.submit((e) => {
+        e.preventDefault();
+    })
 
-/***********************************************
- * SHOW/HIDE USER DEFINED JOB-ROLE INPUT FIELD *
- ***********************************************/
-$("#other-title").hide();
-$("#title").change(() => {
-    if ($("#title").val() === "other") {
-        $("#other-title").fadeIn(500).focus();
-    } else {
-        $("#other-title").fadeOut(500);
-    }
-});
+    /***********************************************
+     * SHOW/HIDE USER DEFINED JOB-ROLE INPUT FIELD *
+     ***********************************************/
+    $("#other-title").hide();
+    $("#title").change(() => {
+        if ($("#title").val() === "other") {
+            $("#other-title").fadeIn(500).focus();
+        } else {
+            $("#other-title").fadeOut(500);
+        }
+    });
 
-/*********************************************************************************
- * T-SHIRT SECTION: Color selection is filtered out based on the selected theme. * 
- * 'Theme - JS Puns'--> 'Cornflower Blue', 'Dark Slate Grey' and 'Gold'.         *
- * 'Theme - I ♥ JS'--> 'Tomato', 'Steel Blue' and 'Dim Grey'                     * 
- *********************************************************************************/
-$('#color').hide();
-$('label[for="color"]').hide();
-$('#design').change(() => {
-    if ($('#design').val() === 'js puns') {
-        $('#color').val('Select Color');
-        $('#color').show();
-        $('label[for="color"]').show();
-        $('#color option[value="tomato"]').hide();
-        $('#color option[value="steelblue"]').hide();
-        $('#color option[value="dimgrey"]').hide();
-        $('#color option[value="cornflowerblue"]').show();
-        $('#color option[value="darkslategrey"]').show();
-        $('#color option[value="gold"]').show();
-    } else if ($('#design').val() === 'heart js') {
-        $('#color').val('Select Color');
-        $('#color').show();
-        $('label[for="color"]').show();
-        $('#color option[value="tomato"]').show();
-        $('#color option[value="steelblue"]').show();
-        $('#color option[value="dimgrey"]').show();
-        $('#color option[value="cornflowerblue"]').hide();
-        $('#color option[value="darkslategrey"]').hide();
-        $('#color option[value="gold"]').hide();
-    } else {
-        $('#color').fadeOut(500);
-        $('label[for="color"]').fadeOut(500);
-    }
-});
+    /*********************************************************************************
+     * T-SHIRT SECTION: Color selection is filtered out based on the selected theme. * 
+     * 'Theme - JS Puns'--> 'Cornflower Blue', 'Dark Slate Grey' and 'Gold'.         *
+     * 'Theme - I ♥ JS'--> 'Tomato', 'Steel Blue' and 'Dim Grey'                     * 
+     *********************************************************************************/
+    $('#color').hide();
+    $('label[for="color"]').hide();
+    $('#design').change(() => {
+        if ($('#design').val() === 'js puns') {
+            $('#color').val('Select Color');
+            $('#color').show();
+            $('label[for="color"]').show();
+            $('#color option[value="tomato"]').hide();
+            $('#color option[value="steelblue"]').hide();
+            $('#color option[value="dimgrey"]').hide();
+            $('#color option[value="cornflowerblue"]').show();
+            $('#color option[value="darkslategrey"]').show();
+            $('#color option[value="gold"]').show();
+        } else if ($('#design').val() === 'heart js') {
+            $('#color').val('Select Color');
+            $('#color').show();
+            $('label[for="color"]').show();
+            $('#color option[value="tomato"]').show();
+            $('#color option[value="steelblue"]').show();
+            $('#color option[value="dimgrey"]').show();
+            $('#color option[value="cornflowerblue"]').hide();
+            $('#color option[value="darkslategrey"]').hide();
+            $('#color option[value="gold"]').hide();
+        } else {
+            $('#color').fadeOut(500);
+            $('label[for="color"]').fadeOut(500);
+        }
+    });
 
 /**************************************************************************************************
  * REGISTER FOR ACTIVITIES SECTION. Some events are the same time as others. Activity             *
@@ -75,396 +83,406 @@ $('#design').change(() => {
  * is displayed below the list of activities.                                                     *
  *************************************************************************************************/
 
-/* GROUPING ACTIVITIES BY CONFLICTING GROUPS */
-$('input[name="js-frameworks"]').addClass('conflicting-group-A');
-$('input[name="express"]').addClass('conflicting-group-A');
-$('input[name="js-libs"').addClass('conflicting-group-B');
-$('input[name="node"]').addClass('conflicting-group-B');
+    /* GROUPING ACTIVITIES BY CONFLICTING GROUPS */
+    $('input[name="js-frameworks"]').addClass('conflicting-group-A');
+    $('input[name="express"]').addClass('conflicting-group-A');
+    $('input[name="js-libs"').addClass('conflicting-group-B');
+    $('input[name="node"]').addClass('conflicting-group-B');
 
-/* CONFLICTING GROUP A, TUESDAY 9-12: js-frameworks and express */
-$('.conflicting-group-A').change(() => {
-    if ($('input[name="js-frameworks"]').prop('checked')) {
-        $('input[name="express"]').attr('disabled', 'true');
-        $('input[name="express"]').parent().css('color', '#c1deeb');
-    } else if ($('input[name="express"]').prop('checked')) {
-        $('input[name="js-frameworks"]').attr('disabled', 'true');
-        $('input[name="js-frameworks"]').parent().css('color', '#c1deeb');
-    } else {
-        $('input[name="js-frameworks"]').removeAttr('disabled');
-        $('input[name="js-frameworks"]').parent().css('color', '#000');
-        $('input[name="express"]').removeAttr('disabled');
-        $('input[name="express"]').parent().css('color', '#000');
-    }
-});
+    /* CONFLICTING GROUP A, TUESDAY 9-12: js-frameworks and express */
+    $('.conflicting-group-A').change(() => {
+        if ($('input[name="js-frameworks"]').prop('checked')) {
+            $('input[name="express"]').attr('disabled', 'true');
+            $('input[name="express"]').parent().css('color', '#c1deeb');
+        } else if ($('input[name="express"]').prop('checked')) {
+            $('input[name="js-frameworks"]').attr('disabled', 'true');
+            $('input[name="js-frameworks"]').parent().css('color', '#c1deeb');
+        } else {
+            $('input[name="js-frameworks"]').removeAttr('disabled');
+            $('input[name="js-frameworks"]').parent().css('color', '#000');
+            $('input[name="express"]').removeAttr('disabled');
+            $('input[name="express"]').parent().css('color', '#000');
+        }
+    });
 
-/* CONFLICTING GROUP B, TUESDAY 1-16: js-libs and node */
-$('.conflicting-group-B').change(() => {
-    if ($('input[name="js-libs"]').prop('checked')) {
-        $('input[name="node"]').attr('disabled', 'true');
-        $('input[name="node"]').parent().css('color', '#c1deeb');
-    } else if ($('input[name="node"]').prop('checked')) {
-        $('input[name="js-libs"]').attr('disabled', 'true');
-        $('input[name="js-libs"]').parent().css('color', '#c1deeb');
-    } else {
-        $('input[name="js-libs"]').removeAttr('disabled');
-        $('input[name="js-libs"]').parent().css('color', '#000');
-        $('input[name="node"]').removeAttr('disabled');
-        $('input[name="node"]').parent().css('color', '#000');
-    }
-});
+    /* CONFLICTING GROUP B, TUESDAY 1-16: js-libs and node */
+    $('.conflicting-group-B').change(() => {
+        if ($('input[name="js-libs"]').prop('checked')) {
+            $('input[name="node"]').attr('disabled', 'true');
+            $('input[name="node"]').parent().css('color', '#c1deeb');
+        } else if ($('input[name="node"]').prop('checked')) {
+            $('input[name="js-libs"]').attr('disabled', 'true');
+            $('input[name="js-libs"]').parent().css('color', '#c1deeb');
+        } else {
+            $('input[name="js-libs"]').removeAttr('disabled');
+            $('input[name="js-libs"]').parent().css('color', '#000');
+            $('input[name="node"]').removeAttr('disabled');
+            $('input[name="node"]').parent().css('color', '#000');
+        }
+    });
 
-/* ACTIVITY PRICE LIST */
-let eventPriceList = [
-    { activity: 'all', price: 200 },
-    { activity: 'js-frameworks', price: 100 },
-    { activity: 'js-libs', price: 100 },
-    { activity: 'express', price: 100 },
-    { activity: 'node', price: 100 },
-    { activity: 'build-tools', price: 100 },
-    { activity: 'npm', price: 100 }
-];
+    /* ACTIVITY PRICE LIST */
+    let eventPriceList = [
+        { activity: 'all', price: 200 },
+        { activity: 'js-frameworks', price: 100 },
+        { activity: 'js-libs', price: 100 },
+        { activity: 'express', price: 100 },
+        { activity: 'node', price: 100 },
+        { activity: 'build-tools', price: 100 },
+        { activity: 'npm', price: 100 }
+    ];
 
-/* PRICE TAG CALCULATOR */
-let priceTag = document.createElement('h3');
-$(priceTag).attr('id', 'price-tag');
-$("#price-tag").hide();
-$('.activities').append(priceTag);
+    /* PRICE TAG CALCULATOR */
+    let priceTag = document.createElement('h3');
+    $(priceTag).attr('id', 'price-tag');
+    $('.activities').append(priceTag);
+    $("#price-tag").hide();
 
-$('.activities').change(() => {
-    let activitySelection = $('.activities input:checked');
-    let totalCost = 0;
-    for (let i = 0; i < activitySelection.length; i++) {
-        for (let j = 0; j < eventPriceList.length; j++) {
-            if (activitySelection[i].name === eventPriceList[j].activity) {
-                totalCost += eventPriceList[j].price;
+    $('.activities').change(() => {
+        let activitySelection = $('.activities input:checked');
+        let totalCost = 0;
+        for (let i = 0; i < activitySelection.length; i++) {
+            for (let j = 0; j < eventPriceList.length; j++) {
+                if (activitySelection[i].name === eventPriceList[j].activity) {
+                    totalCost += eventPriceList[j].price;
+                }
             }
         }
-    }
-    priceTag.innerText = 'Total = $' + totalCost;
-    if (activitySelection.length > 0) {
-        $("#price-tag").show();
-    } else {
-        $("#price-tag").hide();
-    }
-});
+        priceTag.innerText = 'Total = $' + totalCost;
+        if (activitySelection.length > 0) {
+            $("#price-tag").show();
+        } else {
+            $("#price-tag").hide();
+        }
+    });
 
 /************************************************************************************************
  * PAYMENT INFO SECTION: Payment sections are displayed based on the selected payment option.   *
  * Credit Card payment option is selected by default.                                           *
  ************************************************************************************************/
-$('#payment').change(() => {
-    if ($('#payment').val() === 'paypal') {
-        $('#payment-fieldset div:nth-last-child(2)').fadeIn();
-        $('#credit-card').hide();
-        $('#payment-fieldset div:nth-last-child(1)').hide();
+    $('#payment').change(() => {
+        if ($('#payment').val() === 'paypal') {
+            $('#payment-fieldset div:nth-last-child(2)').fadeIn();
+            $('#credit-card').hide();
+            $('#payment-fieldset div:nth-last-child(1)').hide();
 
-    } else if ($('#payment').val() === 'credit_card' || $('#payment').val() === 'select_method') {
-        $('#credit-card').fadeIn();
-        $('#payment-fieldset div:nth-last-child(1)').hide();
-        $('#payment-fieldset div:nth-last-child(2)').hide();
+        } else if ($('#payment').val() === 'credit_card' || $('#payment').val() === 'select_method') {
+            $('#credit-card').fadeIn();
+            $('#payment-fieldset div:nth-last-child(1)').hide();
+            $('#payment-fieldset div:nth-last-child(2)').hide();
 
-    } else if ($('#payment').val() === 'bitcoin') {
-        $('#payment-fieldset div:nth-last-child(1)').fadeIn();
-        $('#credit-card').hide();
-        $('#payment-fieldset div:nth-last-child(2)').hide();
+        } else if ($('#payment').val() === 'bitcoin') {
+            $('#payment-fieldset div:nth-last-child(1)').fadeIn();
+            $('#credit-card').hide();
+            $('#payment-fieldset div:nth-last-child(2)').hide();
+        }
+    });
+
+    /**************************************************************************************** 
+     * FORM VALIDATION: if any of the following errors exists, the user will be prevented   *
+     * from submitting the form.                                                            *
+     * Restrictions:                                                                        *
+     *      Name field can't be blank                                                       *
+     *      Email must be a validly formatted email address.                                *
+     *      At least one activity must be selected.                                         *
+     *      If the selected payment option is credit card, the following must be provided:  *
+     *          Credit card number (between 13 and 16 digits)                               *
+     *          Zip code (5 digits)                                                         *
+     *          CVV code (3 digits)                                                         *
+     ****************************************************************************************/
+    const generateErrorMessage = (errorTargetElement, errorMessage, customClassName) => {
+        errorTargetElement.after("<span class='errorStyle "+ customClassName + "'>" + errorMessage + "</span>");
     }
-});
 
-/**************************************************************************************** 
- * FORM VALIDATION: if any of the following errors exists, the user will be prevented   *
- * from submitting the form.                                                            *
- * Restrictions:                                                                        *
- *      Name field can't be blank                                                       *
- *      Email must be a validly formatted email address.                                *
- *      At least one activity must be selected.                                         *
- *      If the selected payment option is credit card, the following must be provided:  *
- *          Credit card number (between 13 and 16 digits)                               *
- *          Zip code (5 digits)                                                         *
- *          CVV code (3 digits)                                                         *
- ****************************************************************************************/
-const generateErrorMessage = (targetElement, errorMessage, customClassName) => {
-    targetElement.after("<span class='error-message'>" + errorMessage + "</span>");
-    $('.error-message').addClass(customClassName); // use this class for removing errors when fixed
-    $('.error-message').css({ marginBottom: 4, paddingTop: 2, paddingBottom: 2, paddingLeft: 5,paddingRight: 5, border: '1px solid #f1a899', color: '#5f3f3f', display: 'block', background: '#fddfdf', borderRadius: 5, boxShadow: '5px 5px 10px grey' }).show();
-}
-
-/* NAME VALIDATION */
-const nameCheck = (userName) => {
-    let regex = /^[a-zA-Z ]{2,30}$/;
-    return regex.test(userName);
-}
-/* Name errors tested: 
-    CASE 1- Name field empty - class='name-error1'
-    CASE 2- Name less than 2 characters - class='name-error2'
-    CASE 3- Name longer than 30 characters - class='name-error3'
-    CASE 4- Name contains numbers or special characters - class='name-error4'
-*/
-$('#name').focusout(() => {
-    let $nameField = $('#name');
-    let $nameFieldValue = $('#name').val();
-    let userName = nameCheck($nameFieldValue);
-    if ($nameFieldValue.length === 0 && userName === false) { //CASE 1
-        if ($('.name-error1').length) {
-            $('.name-error1').effect('shake');
-        } else {
-            generateErrorMessage($nameField, 'Oops! looks like you forgot to tell us your name.', 'name-error1');
+    /* NAME VALIDATION */
+    const nameCheck = (userName) => {
+        let regex = /^[a-zA-Z ]{2,30}$/;
+        return regex.test(userName);
+    }
+    /* Name errors tested: 
+        CASE 1- Name field empty - class='name-error1'
+        CASE 2- Name less than 2 characters - class='name-error2'
+        CASE 3- Name longer than 30 characters - class='name-error3'
+        CASE 4- Name contains numbers or special characters - class='name-error4'
+    */
+        
+    $('#name').focusout(() => {
+        let $nameField = $('#name');
+        let $nameFieldValue = $('#name').val();
+        let userName = nameCheck($nameFieldValue);
+        if ($nameFieldValue.length === 0 && userName === false) { //CASE 1
+            if ($('.name-error1').length) {
+                $('.name-error1').effect('shake');
+            } else {
+                generateErrorMessage($nameField, 'Oops! looks like you forgot to tell us your name.', 'name-error1');
+                $('.name-error2').remove();
+                $('.name-error3').remove();
+                $('.name-error4').remove();
+                if ($nameField.hasClass('validated')) {
+                    $nameField.removeClass('validated');
+                }
+                if ($nameField.hasClass('hasError') === false) {
+                    $nameField.addClass('hasError');
+                }
+            }
+        } else if ($nameFieldValue.length < 2 && userName === false) { // CASE 2
+            if ($('.name-error2').length) {
+                $('.name-error2').effect('shake');
+            } else {
+                generateErrorMessage($nameField, 'Sorry! we can only register names containing between 2 and 30 characters!', 'name-error2');
+                $('.name-error1').remove();
+                $('.name-error3').remove();
+                $('.name-error4').remove();
+                if ($nameField.hasClass('validated')) {
+                    $nameField.removeClass('validated');
+                }
+                if ($nameField.hasClass('hasError') === false) {
+                    $nameField.addClass('hasError');
+                }
+            }
+        } else if ($nameFieldValue.length > 30 && userName === false) { // CASE 3
+            if ($('.name-error3').length) {
+                $('.name-error3').effect('shake');
+            } else {
+                generateErrorMessage($nameField, 'Sorry! we are unable to register names longer than 30 characters.', 'name-error3');
+                $('.name-error1').remove();
+                $('.name-error2').remove();
+                $('.name-error4').remove();
+                if ($nameField.hasClass('validated')) {
+                    $nameField.removeClass('validated');
+                }
+                if ($nameField.hasClass('hasError') === false) {
+                    $nameField.addClass('hasError');
+                }
+            }
+        } else if (userName === false) { // CASE 4
+            if ($('.name-error4').length) {
+                $('.name-error4').effect('shake');
+            } else {
+                generateErrorMessage($nameField, 'Sorry! we cannot register names containing numbers or special characters (i.e. +, -, &, *, /, $, etc.).', 'name-error4');
+                $('.name-error1').remove();
+                $('.name-error2').remove();
+                $('.name-error3').remove();
+                if ($nameField.hasClass('validated')) {
+                    $nameField.removeClass('validated');
+                }
+                if ($nameField.hasClass('hasError') === false) {
+                    $nameField.addClass('hasError');
+                }
+            }
+        } else if (userName) { // VALIDATED
+            $('.name-error1').remove();
             $('.name-error2').remove();
             $('.name-error3').remove();
             $('.name-error4').remove();
-            $nameField.removeClass('validated');
-            if ($nameField.hasClass('hasError') === false) {
-                $nameField.addClass('hasError');
-            }
+            $nameField.removeClass('hasError');
+            $nameField.addClass('validated');
         }
-    } else if ($nameFieldValue.length < 2 && userName === false) { // CASE 2
-        if ($('.name-error2').length) {
-            $('.name-error2').effect('shake');
+    });
+
+    /* EMAIL VALIDATION */
+    const emailCheck = ((email) => {
+        let regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email);
+    });
+
+    $('#mail').keyup(() => {
+        let $emailField = $('#mail');
+        let $emailFieldValue = $('#mail').val();
+        let userEmail = emailCheck($emailFieldValue);
+        if (userEmail) {
+            $('.email-error').remove();
+            $emailField.removeClass('hasError');
+            $emailField.addClass('validated');
+
         } else {
-            generateErrorMessage($nameField, 'Sorry! we can only register names containing between 2 and 30 characters!', 'name-error2');
-            $('.name-error1').remove();
-            $('.name-error3').remove();
-            $('.name-error4').remove();
-            $nameField.removeClass('validated');
-            if ($nameField.hasClass('hasError') === false) {
-                $nameField.addClass('hasError');
+            if ($('.email-error').length) {
+                // do nothing for now :P 
+            } else {
+                generateErrorMessage($emailField, 'Please enter your email in the following format: yourEmail@email.com.', 'email-error');
+                $emailField.addClass('hasError');
+                $emailField.removeClass('validated');
             }
         }
-    } else if ($nameFieldValue.length > 30 && userName === false) { // CASE 3
-        if ($('.name-error3').length) {
-            $('.name-error3').effect('shake');
+    });
+
+    /* ACTIVITIES VALIDATION */
+    let $priceTagElement = $('#price-tag');
+    /* Error message is attached to the price tag element */
+    generateErrorMessage($priceTagElement, 'Please select at least one activity to be able to register.', 'activity-error');
+    $('.activities input').click(() => {
+        if ($('.activities input:checked').length < 1) {
+            $('.activity-error').show();
         } else {
-            generateErrorMessage($nameField, 'Sorry! we are unable to register names longer than 30 characters.', 'name-error3');
-            $('.name-error1').remove();
-            $('.name-error2').remove();
-            $('.name-error4').remove();
-            $nameField.removeClass('validated');
-            if ($nameField.hasClass('hasError') === false) {
-                $nameField.addClass('hasError');
-            }
+            $('.activity-error').hide();
         }
-    } else if (userName === false) { // CASE 4
-        if ($('.name-error4').length) {
-            $('.name-error4').effect('shake');
-        } else {
-            generateErrorMessage($nameField, 'Sorry! we cannot register names containing numbers or special characters (i.e. +, -, &, *, /, $, etc.).', 'name-error4');
-            $('.name-error1').remove();
-            $('.name-error2').remove();
-            $('.name-error3').remove();
-            $nameField.removeClass('validated');
-            if ($nameField.hasClass('hasError') === false) {
-                $nameField.addClass('hasError');
-            }
-        }
-    } else if (userName) { // VALIDATED
-        $('.name-error1').remove();
-        $('.name-error2').remove();
-        $('.name-error3').remove();
-        $('.name-error4').remove();
-        $nameField.removeClass('hasError');
-        $nameField.addClass('validated');
+    });
+
+    /* CREDIT CARD VALIDATION */
+    const creditCardNumberCheck = (creditCardNumber) => {
+        let regex = /^[0-9]{13,16}$/;
+        return regex.test(creditCardNumber);
     }
-});
-
-/* EMAIL VALIDATION */
-const emailCheck = ((email) => {
-    let regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    return regex.test(email);
-});
-
-$('#mail').keyup(() => {
-    let $emailField = $('#mail');
-    let $emailFieldValue = $('#mail').val();
-    let userEmail = emailCheck($emailFieldValue);
-    if (userEmail) {
-        $('.email-error').remove();
-        $emailField.removeClass('hasError');
-        $emailField.addClass('validated');
-
-    } else {
-        if ($('.email-error').length) {
-            // do nothing for now :P 
-        } else {
-            generateErrorMessage($emailField, 'Please enter your email in the following format: yourEmail@email.com.', 'email-error');
-            $emailField.addClass('hasError');
-            $emailField.removeClass('validated');
-        }
-    }
-});
-
-/* ACTIVITIES VALIDATION */
-let $priceTagElement = $('#price-tag');
-generateErrorMessage($priceTagElement, 'You must select at least one activity to be able to register for the conference.', 'activity-error');
-$('.activities').click(() => {
-    if ($('.activities input:checked').length < 1) {
-        $('.activity-error').show();
-    } else {
-        $('.activity-error').hide();
-    }
-});
-
-/* CREDIT CARD VALIDATION */
-const creditCardNumberCheck = (creditCardNumber) => {
-    let regex = /^[0-9]{13,16}$/;
-    return regex.test(creditCardNumber);
-}
-/* CC number errors tested: 
-    CASE 1- CC field empty - class='cc-error1'
-    CASE 2- CC number less than 13 characters - class='cc-error2'
-    CASE 3- CC number longer than 16 characters - class='cc-error3'
-    CASE 4- CC number contains characters other than numbers - class='cc-error4'
-*/
-$('#cc-num').focusout(() => {
-    let $creditCardField = $('#cc-num');
-    let $creditCardFieldValue = $('#cc-num').val();
-    let userCreditCardNumber = creditCardNumberCheck($creditCardFieldValue);
-    if ($creditCardFieldValue.length === 0 && userCreditCardNumber === false) { //CASE 1
-        if ($('.cc-error1').length) {
-            $('.cc-error1').effect('shake');
-        } else {
-            generateErrorMessage($creditCardField, 'Oops! looks like you forgot to tell us your credit card number.', 'cc-error1');
-            $('.cc-error2').remove();
-            $('.cc-error3').remove();
-            $('.cc-error4').remove();
-            $creditCardField.removeClass('validated');
-            if ($creditCardField.hasClass('hasError') === false) {
-                $creditCardField.addClass('hasError');
+    /* CC number errors tested: 
+        CASE 1- CC field empty - class='cc-error1'
+        CASE 2- CC number less than 13 characters - class='cc-error2'
+        CASE 3- CC number longer than 16 characters - class='cc-error3'
+        CASE 4- CC number contains characters other than numbers - class='cc-error4'
+    */
+    $('#cc-num').focusout(() => {
+        let $creditCardField = $('#cc-num');
+        let $creditCardFieldValue = $('#cc-num').val();
+        let userCreditCardNumber = creditCardNumberCheck($creditCardFieldValue);
+        if ($creditCardFieldValue.length === 0 && userCreditCardNumber === false) { //CASE 1
+            if ($('.cc-error1').length) {
+                $('.cc-error1').effect('shake');
+            } else {
+                generateErrorMessage($creditCardField, 'Oops! looks like you forgot to tell us your credit card number.', 'cc-error1');
+                $('.cc-error2').remove();
+                $('.cc-error3').remove();
+                $('.cc-error4').remove();
+                $creditCardField.removeClass('validated');
+                if ($creditCardField.hasClass('hasError') === false) {
+                    $creditCardField.addClass('hasError');
+                }
             }
-        }
-    } else if ($creditCardFieldValue.length < 13 && userCreditCardNumber === false) { // CASE 2
-        if ($('.cc-error2').length) {
-            $('.cc-error2').effect('shake');
-        } else {
-            generateErrorMessage($creditCardField, 'Something went wrong! your credit card number must contain at least 13 digits.', 'cc-error2');
-            $('.cc-error1').remove();
-            $('.cc-error3').remove();
-            $('.cc-error4').remove();
-            $creditCardField.removeClass('validated');
-            if ($creditCardField.hasClass('hasError') === false) {
-                $creditCardField.addClass('hasError');
+        } else if ($creditCardFieldValue.length < 13 && userCreditCardNumber === false) { // CASE 2
+            if ($('.cc-error2').length) {
+                $('.cc-error2').effect('shake');
+            } else {
+                generateErrorMessage($creditCardField, 'Something went wrong! your credit card number must contain at least 13 digits.', 'cc-error2');
+                $('.cc-error1').remove();
+                $('.cc-error3').remove();
+                $('.cc-error4').remove();
+                $creditCardField.removeClass('validated');
+                if ($creditCardField.hasClass('hasError') === false) {
+                    $creditCardField.addClass('hasError');
+                }
             }
-        }
-    } else if ($creditCardFieldValue.length > 16 && userCreditCardNumber === false) { // CASE 3
-        if ($('.cc-error3').length) {
-            $('.cc-error3').effect('shake');
-        } else {
-            generateErrorMessage($creditCardField, 'Something went wrong! your credit card number cannot contain more than 16 digits.', 'cc-error3');
-            $('.cc-error1').remove();
-            $('.cc-error2').remove();
-            $('.cc-error4').remove();
-            $creditCardField.removeClass('validated');
-            if ($creditCardField.hasClass('hasError') === false) {
-                $creditCardField.addClass('hasError');
+        } else if ($creditCardFieldValue.length > 16 && userCreditCardNumber === false) { // CASE 3
+            if ($('.cc-error3').length) {
+                $('.cc-error3').effect('shake');
+            } else {
+                generateErrorMessage($creditCardField, 'Something went wrong! your credit card number cannot contain more than 16 digits.', 'cc-error3');
+                $('.cc-error1').remove();
+                $('.cc-error2').remove();
+                $('.cc-error4').remove();
+                $creditCardField.removeClass('validated');
+                if ($creditCardField.hasClass('hasError') === false) {
+                    $creditCardField.addClass('hasError');
+                }
             }
-        }
-    } else if (userCreditCardNumber === false) { // CASE 4
-        if ($('.cc-error4').length) {
-            $('.cc-error4').effect('shake');
-        } else {
-            generateErrorMessage($creditCardField, 'Something went wrong! your credit card number cannot contain letters or special characters (i.e. +, -, &, *, /, $, etc.).', 'cc-error4');
+        } else if (userCreditCardNumber === false) { // CASE 4
+            if ($('.cc-error4').length) {
+                $('.cc-error4').effect('shake');
+            } else {
+                generateErrorMessage($creditCardField, 'Something went wrong! your credit card number cannot contain letters or special characters (i.e. +, -, &, *, /, $, etc.).', 'cc-error4');
+                $('.cc-error1').remove();
+                $('.cc-error2').remove();
+                $('.cc-error3').remove();
+                $creditCardField.removeClass('validated');
+                if ($creditCardField.hasClass('hasError') === false) {
+                    $creditCardField.addClass('hasError');
+                }
+            }
+        } else if (userCreditCardNumber) { // VALIDATED
             $('.cc-error1').remove();
             $('.cc-error2').remove();
             $('.cc-error3').remove();
-            $creditCardField.removeClass('validated');
-            if ($creditCardField.hasClass('hasError') === false) {
-                $creditCardField.addClass('hasError');
-            }
+            $('.cc-error4').remove();
+            $creditCardField.removeClass('hasError');
+            $creditCardField.addClass('validated');
         }
-    } else if (userCreditCardNumber) { // VALIDATED
-        $('.cc-error1').remove();
-        $('.cc-error2').remove();
-        $('.cc-error3').remove();
-        $('.cc-error4').remove();
-        $creditCardField.removeClass('hasError');
-        $creditCardField.addClass('validated');
-    }
-});
+    });
 
-/* ZIP CODE VALIDATION */
-const zipCheck = (zipNumber) => {
-    let regex = /^[0-9]{5}$/;
-    return regex.test(zipNumber);
-}
-/* Zip number errors tested: 
-    CASE 1- Zip field empty - class='zip-error1'
-    CASE 2- zipCheck === false - class='zip-error2'
-*/
-$('#zip').focusout(() => {
-    let $zipField = $('#zip');
-    let $zipFieldValue = $('#zip').val();
-    let userZipNumber = zipCheck($zipFieldValue);
-    if ($zipFieldValue.length === 0 && userZipNumber === false) { //CASE 1
-        if ($('.zip-error1').length) {
-            $('.zip-error1').effect('shake');
-        } else {
-            generateErrorMessage($zipField, 'Please enter your ZIP code.', 'zip-error1');
-            $('.zip-error2').remove();
-            $zipField.removeClass('validated');
-            if ($zipField.hasClass('hasError') === false) {
-                $zipField.addClass('hasError');
+    /* ZIP CODE VALIDATION */
+    const zipCheck = (zipNumber) => {
+        let regex = /^[0-9]{5}$/;
+        return regex.test(zipNumber);
+    }
+    /* Zip number errors tested: 
+        CASE 1- Zip field empty - class='zip-error1'
+        CASE 2- zipCheck === false - class='zip-error2'
+    */
+    $('#zip').focusout(() => {
+        let $zipField = $('#zip');
+        let $zipFieldValue = $('#zip').val();
+        let userZipNumber = zipCheck($zipFieldValue);
+        if ($zipFieldValue.length === 0 && userZipNumber === false) { //CASE 1
+            if ($('.zip-error1').length) {
+                $('.zip-error1').effect('shake');
+            } else {
+                generateErrorMessage($zipField, 'Please enter your ZIP code.', 'zip-error1');
+                $('.zip-error2').remove();
+                $zipField.removeClass('validated');
+                if ($zipField.hasClass('hasError') === false) {
+                    $zipField.addClass('hasError');
+                }
             }
-        }
-    } else if (userZipNumber === false) { // CASE 2
-        if ($('.zip-error2').length) {
-            $('.zip-error2').effect('shake');
-        } else {
-            generateErrorMessage($zipField, 'ZIP codes contain exactly 5 digits. No letters or special characters are allowed.', 'zip-error2');
+        } else if (userZipNumber === false) { // CASE 2
+            if ($('.zip-error2').length) {
+                $('.zip-error2').effect('shake');
+            } else {
+                generateErrorMessage($zipField, 'ZIP codes contain exactly 5 digits. No letters or special characters are allowed.', 'zip-error2');
+                $('.zip-error1').remove();
+                $zipField.removeClass('validated');
+                if ($zipField.hasClass('hasError') === false) {
+                    $zipField.addClass('hasError');
+                }
+            }
+        } else if (userZipNumber) { // VALIDATED
             $('.zip-error1').remove();
-            $zipField.removeClass('validated');
-            if ($zipField.hasClass('hasError') === false) {
-                $zipField.addClass('hasError');
-            }
+            $('.zip-error2').remove();
+            $zipField.removeClass('hasError');
+            $zipField.addClass('validated');
         }
-    } else if (userZipNumber) { // VALIDATED
-        $('.zip-error1').remove();
-        $('.zip-error2').remove();
-        $zipField.removeClass('hasError');
-        $zipField.addClass('validated');
-    }
-});
+    });
 
-/* CVV VALIDATION */
-const cvvCheck = (zipNumber) => {
-    let regex = /^[0-9]{3}$/;
-    return regex.test(zipNumber);
-}
-/* CVV errors tested: 
-    CASE 1- CVV field empty - class='cvv-error1'
-    CASE 2- cvvCheck === false - class='cvv-error2'
-*/
-$('#cvv').focusout(() => {
-    let $cvvField = $('#cvv');
-    let $cvvFieldValue = $('#cvv').val();
-    let userCvvNumber = cvvCheck($cvvFieldValue);
-    if ($cvvFieldValue.length === 0 && userCvvNumber === false) { //CASE 1
-        if ($('.cvv-error1').length) {
-            $('.cvv-error1').effect('shake');
-        } else {
-            generateErrorMessage($cvvField, 'Please enter your CVV code.', 'cvv-error1');
-            $('.cvv-error2').remove();
-            $cvvField.removeClass('validated');
-            if ($cvvField.hasClass('hasError') === false) {
-                $cvvField.addClass('hasError');
+    /* CVV VALIDATION */
+    const cvvCheck = (zipNumber) => {
+        let regex = /^[0-9]{3}$/;
+        return regex.test(zipNumber);
+    }
+    /* CVV errors tested: 
+        CASE 1- CVV field empty - class='cvv-error1'
+        CASE 2- cvvCheck === false - class='cvv-error2'
+    */
+    $('#cvv').focusout(() => {
+        let $cvvField = $('#cvv');
+        let $cvvFieldValue = $('#cvv').val();
+        let userCvvNumber = cvvCheck($cvvFieldValue);
+        if ($cvvFieldValue.length === 0 && userCvvNumber === false) { //CASE 1
+            if ($('.cvv-error1').length) {
+                $('.cvv-error1').effect('shake');
+            } else {
+                generateErrorMessage($cvvField, 'Please enter your CVV code.', 'cvv-error1');
+                $('.cvv-error2').remove();
+                $cvvField.removeClass('validated');
+                if ($cvvField.hasClass('hasError') === false) {
+                    $cvvField.addClass('hasError');
+                }
             }
-        }
-    } else if (userCvvNumber === false) { // CASE 2
-        if ($('.cvv-error2').length) {
-            $('.cvv-error2').effect('shake');
-        } else {
-            generateErrorMessage($cvvField, 'CVV codes contain exactly 3 digits. No letters or special characters are allowed.', 'cvv-error2');
+        } else if (userCvvNumber === false) { // CASE 2
+            if ($('.cvv-error2').length) {
+                $('.cvv-error2').effect('shake');
+            } else {
+                generateErrorMessage($cvvField, 'CVV codes contain exactly 3 digits. No letters or special characters are allowed.', 'cvv-error2');
+                $('.cvv-error1').remove();
+                $cvvField.removeClass('validated');
+                if ($cvvField.hasClass('hasError') === false) {
+                    $cvvField.addClass('hasError');
+                }
+            }
+        } else if (userCvvNumber) { // VALIDATED
             $('.cvv-error1').remove();
-            $cvvField.removeClass('validated');
-            if ($cvvField.hasClass('hasError') === false) {
-                $cvvField.addClass('hasError');
-            }
+            $('.cvv-error2').remove();
+            $cvvField.removeClass('hasError');
+            $cvvField.addClass('validated');
         }
-    } else if (userCvvNumber) { // VALIDATED
-        $('.cvv-error1').remove();
-        $('.cvv-error2').remove();
-        $cvvField.removeClass('hasError');
-        $cvvField.addClass('validated');
-    }
-});
+    });
 
+    $('#submit-button').disable();
+});
 /* STEP #6.1 --> FORM VALIDATION MESSAGES: Provide some kind of indication when there is a
 validation error. For example, the field borders could turn red, or a message could appear near 
 the field or at the top of the form. 
