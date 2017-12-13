@@ -5,8 +5,7 @@
  *                       ***** AIMING FOR EXCEEDS EXPECTATIONS *****                    *
  *                                                                                      *
  * WHAT IT DOES:                                                                        *
- *   This JavaScript code is intended to provide interactivity to a web form when       *
- *   registering for a conference.                                                      *
+ *   This JavaScript code is intended to provide interactivity to a web form.           *
  ****************************************************************************************/
 
 /****************
@@ -143,9 +142,9 @@ $('.activities').change(() => {
     }
     priceTag.innerText = 'Total = $' + totalCost;
     if (activitySelection.length > 0) {
-        $("#price-tag").fadeIn(500);
+        $("#price-tag").show();
     } else {
-        $("#price-tag").fadeOut(500);
+        $("#price-tag").hide();
     }
 });
 
@@ -153,9 +152,6 @@ $('.activities').change(() => {
  * PAYMENT INFO SECTION: Payment sections are displayed based on the selected payment option.   *
  * Credit Card payment option is selected by default.                                           *
  ************************************************************************************************/
-
-// const paymentFieldset = $('#payment').parent();
-// console.log(paymentFieldset[0]);
 $('#payment').change(() => {
     if ($('#payment').val() === 'paypal') {
         $('#payment-fieldset div:nth-last-child(2)').fadeIn();
@@ -189,11 +185,11 @@ $('#payment').change(() => {
 const generateErrorMessage = (targetElement, errorMessage, customClassName) => {
     targetElement.after("<span class='error-message'>" + errorMessage + "</span>");
     $('.error-message').addClass(customClassName); // use this class for removing errors when fixed
-    $('.error-message').css({marginBottom: 4, paddingTop: 2, paddingBottom: 2, paddingLeft: 15, border: '1px solid #f1a899', color: '#5f3f3f', display: 'block', background: '#fddfdf', borderRadius: 5, boxShadow: '5px 5px 10px grey'}).show();
+    $('.error-message').css({ marginBottom: 4, paddingTop: 2, paddingBottom: 2, paddingLeft: 5,paddingRight: 5, border: '1px solid #f1a899', color: '#5f3f3f', display: 'block', background: '#fddfdf', borderRadius: 5, boxShadow: '5px 5px 10px grey' }).show();
 }
 
 /* NAME VALIDATION */
-let nameCheck = (userName) => {
+const nameCheck = (userName) => {
     let regex = /^[a-zA-Z ]{2,30}$/;
     return regex.test(userName);
 }
@@ -215,6 +211,7 @@ $('#name').focusout(() => {
             $('.name-error2').remove();
             $('.name-error3').remove();
             $('.name-error4').remove();
+            $nameField.removeClass('validated');
             if ($nameField.hasClass('hasError') === false) {
                 $nameField.addClass('hasError');
             }
@@ -227,6 +224,7 @@ $('#name').focusout(() => {
             $('.name-error1').remove();
             $('.name-error3').remove();
             $('.name-error4').remove();
+            $nameField.removeClass('validated');
             if ($nameField.hasClass('hasError') === false) {
                 $nameField.addClass('hasError');
             }
@@ -239,6 +237,7 @@ $('#name').focusout(() => {
             $('.name-error1').remove();
             $('.name-error2').remove();
             $('.name-error4').remove();
+            $nameField.removeClass('validated');
             if ($nameField.hasClass('hasError') === false) {
                 $nameField.addClass('hasError');
             }
@@ -251,6 +250,7 @@ $('#name').focusout(() => {
             $('.name-error1').remove();
             $('.name-error2').remove();
             $('.name-error3').remove();
+            $nameField.removeClass('validated');
             if ($nameField.hasClass('hasError') === false) {
                 $nameField.addClass('hasError');
             }
@@ -261,11 +261,12 @@ $('#name').focusout(() => {
         $('.name-error3').remove();
         $('.name-error4').remove();
         $nameField.removeClass('hasError');
+        $nameField.addClass('validated');
     }
 });
 
 /* EMAIL VALIDATION */
-let emailCheck = ((email) => {
+const emailCheck = ((email) => {
     let regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return regex.test(email);
 });
@@ -277,19 +278,192 @@ $('#mail').keyup(() => {
     if (userEmail) {
         $('.email-error').remove();
         $emailField.removeClass('hasError');
+        $emailField.addClass('validated');
+
     } else {
         if ($('.email-error').length) {
-
+            // do nothing for now :P 
         } else {
             generateErrorMessage($emailField, 'Please enter your email in the following format: yourEmail@email.com.', 'email-error');
             $emailField.addClass('hasError');
+            $emailField.removeClass('validated');
         }
     }
 });
 
+/* ACTIVITIES VALIDATION */
+let $priceTagElement = $('#price-tag');
+generateErrorMessage($priceTagElement, 'You must select at least one activity to be able to register for the conference.', 'activity-error');
+$('.activities').click(() => {
+    if ($('.activities input:checked').length < 1) {
+        $('.activity-error').show();
+    } else {
+        $('.activity-error').hide();
+    }
+});
 
+/* CREDIT CARD VALIDATION */
+const creditCardNumberCheck = (creditCardNumber) => {
+    let regex = /^[0-9]{13,16}$/;
+    return regex.test(creditCardNumber);
+}
+/* CC number errors tested: 
+    CASE 1- CC field empty - class='cc-error1'
+    CASE 2- CC number less than 13 characters - class='cc-error2'
+    CASE 3- CC number longer than 16 characters - class='cc-error3'
+    CASE 4- CC number contains characters other than numbers - class='cc-error4'
+*/
+$('#cc-num').focusout(() => {
+    let $creditCardField = $('#cc-num');
+    let $creditCardFieldValue = $('#cc-num').val();
+    let userCreditCardNumber = creditCardNumberCheck($creditCardFieldValue);
+    if ($creditCardFieldValue.length === 0 && userCreditCardNumber === false) { //CASE 1
+        if ($('.cc-error1').length) {
+            $('.cc-error1').effect('shake');
+        } else {
+            generateErrorMessage($creditCardField, 'Oops! looks like you forgot to tell us your credit card number.', 'cc-error1');
+            $('.cc-error2').remove();
+            $('.cc-error3').remove();
+            $('.cc-error4').remove();
+            $creditCardField.removeClass('validated');
+            if ($creditCardField.hasClass('hasError') === false) {
+                $creditCardField.addClass('hasError');
+            }
+        }
+    } else if ($creditCardFieldValue.length < 13 && userCreditCardNumber === false) { // CASE 2
+        if ($('.cc-error2').length) {
+            $('.cc-error2').effect('shake');
+        } else {
+            generateErrorMessage($creditCardField, 'Something went wrong! your credit card number must contain at least 13 digits.', 'cc-error2');
+            $('.cc-error1').remove();
+            $('.cc-error3').remove();
+            $('.cc-error4').remove();
+            $creditCardField.removeClass('validated');
+            if ($creditCardField.hasClass('hasError') === false) {
+                $creditCardField.addClass('hasError');
+            }
+        }
+    } else if ($creditCardFieldValue.length > 16 && userCreditCardNumber === false) { // CASE 3
+        if ($('.cc-error3').length) {
+            $('.cc-error3').effect('shake');
+        } else {
+            generateErrorMessage($creditCardField, 'Something went wrong! your credit card number cannot contain more than 16 digits.', 'cc-error3');
+            $('.cc-error1').remove();
+            $('.cc-error2').remove();
+            $('.cc-error4').remove();
+            $creditCardField.removeClass('validated');
+            if ($creditCardField.hasClass('hasError') === false) {
+                $creditCardField.addClass('hasError');
+            }
+        }
+    } else if (userCreditCardNumber === false) { // CASE 4
+        if ($('.cc-error4').length) {
+            $('.cc-error4').effect('shake');
+        } else {
+            generateErrorMessage($creditCardField, 'Something went wrong! your credit card number cannot contain letters or special characters (i.e. +, -, &, *, /, $, etc.).', 'cc-error4');
+            $('.cc-error1').remove();
+            $('.cc-error2').remove();
+            $('.cc-error3').remove();
+            $creditCardField.removeClass('validated');
+            if ($creditCardField.hasClass('hasError') === false) {
+                $creditCardField.addClass('hasError');
+            }
+        }
+    } else if (userCreditCardNumber) { // VALIDATED
+        $('.cc-error1').remove();
+        $('.cc-error2').remove();
+        $('.cc-error3').remove();
+        $('.cc-error4').remove();
+        $creditCardField.removeClass('hasError');
+        $creditCardField.addClass('validated');
+    }
+});
 
+/* ZIP CODE VALIDATION */
+const zipCheck = (zipNumber) => {
+    let regex = /^[0-9]{5}$/;
+    return regex.test(zipNumber);
+}
+/* Zip number errors tested: 
+    CASE 1- Zip field empty - class='zip-error1'
+    CASE 2- zipCheck === false - class='zip-error2'
+*/
+$('#zip').focusout(() => {
+    let $zipField = $('#zip');
+    let $zipFieldValue = $('#zip').val();
+    let userZipNumber = zipCheck($zipFieldValue);
+    if ($zipFieldValue.length === 0 && userZipNumber === false) { //CASE 1
+        if ($('.zip-error1').length) {
+            $('.zip-error1').effect('shake');
+        } else {
+            generateErrorMessage($zipField, 'Please enter your ZIP code.', 'zip-error1');
+            $('.zip-error2').remove();
+            $zipField.removeClass('validated');
+            if ($zipField.hasClass('hasError') === false) {
+                $zipField.addClass('hasError');
+            }
+        }
+    } else if (userZipNumber === false) { // CASE 2
+        if ($('.zip-error2').length) {
+            $('.zip-error2').effect('shake');
+        } else {
+            generateErrorMessage($zipField, 'ZIP codes contain exactly 5 digits. No letters or special characters are allowed.', 'zip-error2');
+            $('.zip-error1').remove();
+            $zipField.removeClass('validated');
+            if ($zipField.hasClass('hasError') === false) {
+                $zipField.addClass('hasError');
+            }
+        }
+    } else if (userZipNumber) { // VALIDATED
+        $('.zip-error1').remove();
+        $('.zip-error2').remove();
+        $zipField.removeClass('hasError');
+        $zipField.addClass('validated');
+    }
+});
 
+/* CVV VALIDATION */
+const cvvCheck = (zipNumber) => {
+    let regex = /^[0-9]{3}$/;
+    return regex.test(zipNumber);
+}
+/* CVV errors tested: 
+    CASE 1- CVV field empty - class='cvv-error1'
+    CASE 2- cvvCheck === false - class='cvv-error2'
+*/
+$('#cvv').focusout(() => {
+    let $cvvField = $('#cvv');
+    let $cvvFieldValue = $('#cvv').val();
+    let userCvvNumber = cvvCheck($cvvFieldValue);
+    if ($cvvFieldValue.length === 0 && userCvvNumber === false) { //CASE 1
+        if ($('.cvv-error1').length) {
+            $('.cvv-error1').effect('shake');
+        } else {
+            generateErrorMessage($cvvField, 'Please enter your CVV code.', 'cvv-error1');
+            $('.cvv-error2').remove();
+            $cvvField.removeClass('validated');
+            if ($cvvField.hasClass('hasError') === false) {
+                $cvvField.addClass('hasError');
+            }
+        }
+    } else if (userCvvNumber === false) { // CASE 2
+        if ($('.cvv-error2').length) {
+            $('.cvv-error2').effect('shake');
+        } else {
+            generateErrorMessage($cvvField, 'CVV codes contain exactly 3 digits. No letters or special characters are allowed.', 'cvv-error2');
+            $('.cvv-error1').remove();
+            $cvvField.removeClass('validated');
+            if ($cvvField.hasClass('hasError') === false) {
+                $cvvField.addClass('hasError');
+            }
+        }
+    } else if (userCvvNumber) { // VALIDATED
+        $('.cvv-error1').remove();
+        $('.cvv-error2').remove();
+        $cvvField.removeClass('hasError');
+        $cvvField.addClass('validated');
+    }
+});
 
 /* STEP #6.1 --> FORM VALIDATION MESSAGES: Provide some kind of indication when there is a
 validation error. For example, the field borders could turn red, or a message could appear near 
@@ -305,19 +479,19 @@ methods should be visible. */
 
 /* *** EXCEEDS EXPECTATIONS: EXTRA STEPS ***
 
-STEP #7 --> hide the 'Color' label and 'Select' menu until T-Shirt design has been selected from 
-the 'Design' menu. ***DONE***
+STEP #7 ***DONE*** --> hide the 'Color' label and 'Select' menu until T-Shirt design has been 
+selected from the 'Design' menu. 
 
-STEP #8 --> Program at least one of your error messages so that more information is provided 
-depending on the error. For example, if the user hasn’t entered a credit card number and the field 
-is completely blank, the error message reads “Please enter a credit card number.” If the field 
-isn’t empty but contains only 10 numbers, the error message reads “Please enter a number that is 
-between 13 and 16 digits long.
+STEP #8 ***DONE*** (NAME FIELD) --> Program at least one of your error messages so that more 
+information is provided depending on the error. For example, if the user hasn’t entered a credit 
+card number and the field is completely blank, the error message reads “Please enter a credit card 
+number.” If the field isn’t empty but contains only 10 numbers, the error message reads “Please 
+enter a number that is between 13 and 16 digits long. 
 
-STEP #9 --> Program your form so that it provides a real-time validation error message for at 
-least one text input field. Rather than providing an error message on submit, your form should 
-check for errors and display messages as the user begins typing inside a text field. For example, 
-if the user enters an invalid email address, the error appears as the user begins to type, and 
-disappears as soon as the user has entered a complete and correctly formatted email address. 
-Please accomplish this with your own JavaScript code. Do not rely on HTML5's built-in email 
-validation.*/
+STEP #9 ***DONE*** (EMAIL FIELD) --> Program your form so that it provides a real-time validation 
+error message for at least one text input field. Rather than providing an error message on submit, 
+your form should check for errors and display messages as the user begins typing inside a text 
+field. For example,if the user enters an invalid email address, the error appears as the user 
+begins to type, and disappears as soon as the user has entered a complete and correctly formatted 
+email address. Please accomplish this with your own JavaScript code. Do not rely on HTML5's 
+built-in email validation. */

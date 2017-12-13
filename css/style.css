@@ -102,7 +102,10 @@ input:focus {
 }
 
 .validated {
-	border-color: lime;
+	border-left: 10px solid #6FA911;
+	border-right: 10px solid #6FA911;
+	border-bottom: 1px solid #6FA911;
+	border-top: 1px solid #6FA911;
 }
 
 input[type="checkbox"],
