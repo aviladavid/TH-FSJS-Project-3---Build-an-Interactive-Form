@@ -272,11 +272,11 @@ $('#payment').change(() => {
  * FORM VALIDATION: if any of the following errors exists, the user will be prevented       *
  * from submitting the form.                                                                *
  * Restrictions:                                                                            *
- *      Name field can't be blank, names cant contain numbers or special characters and     *
+ *    - Name field can't be blank, names cant contain numbers or special characters and     *
  *      cannot have less than 2 character or more than 30.                                  *
- *      Email must be a validly formatted email address.                                    *
- *      At least one activity must be selected.                                             *
- *      If the selected payment option is credit card, the following must be provided:      *
+ *    - Email must be a validly formatted email address.                                    *
+ *    - At least one activity must be selected.                                             *
+ *    - If the selected payment option is credit card, the following must be provided:      *
  *          Credit card number (between 13 and 16 digits, no letters or special characters) *
  *          Zip code (5 digits, no letters or special characters)                           *
  *          CVV code (3 digits, no letters or special characters)                           *
@@ -537,36 +537,3 @@ $cvvField.focusout(() => {
         $cvvField.addClass('validated');
     }
 });
-
-//validateForm();
-
-/* STEP #6.1 --> FORM VALIDATION MESSAGES: Provide some kind of indication when there is a
-validation error. For example, the field borders could turn red, or a message could appear near 
-the field or at the top of the form. 
-There should be an error indication for the Name field, Email field, Register for Activities 
-check-boxes, credit card number, zip code and CVV.*/
-
-/* STEP #7 --> When JavaScript is switched off or unavailable, the user should still have access
-to all form fields and payment information. For example, the 'Other' text field in the 'Jobs 
-Role' menu should be visible on the page when JavaScript is switched off, and all the payment 
-methods should be visible. */
-
-
-/* *** EXCEEDS EXPECTATIONS: EXTRA STEPS ***
-
-STEP #7 ***DONE*** --> hide the 'Color' label and 'Select' menu until T-Shirt design has been 
-selected from the 'Design' menu. 
-
-STEP #8 ***DONE*** (NAME FIELD) --> Program at least one of your error messages so that more 
-information is provided depending on the error. For example, if the user hasn’t entered a credit 
-card number and the field is completely blank, the error message reads “Please enter a credit card 
-number.” If the field isn’t empty but contains only 10 numbers, the error message reads “Please 
-enter a number that is between 13 and 16 digits long. 
-
-STEP #9 ***DONE*** (EMAIL FIELD) --> Program your form so that it provides a real-time validation 
-error message for at least one text input field. Rather than providing an error message on submit, 
-your form should check for errors and display messages as the user begins typing inside a text 
-field. For example,if the user enters an invalid email address, the error appears as the user 
-begins to type, and disappears as soon as the user has entered a complete and correctly formatted 
-email address. Please accomplish this with your own JavaScript code. Do not rely on HTML5's 
-built-in email validation. */
