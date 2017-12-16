@@ -99,7 +99,6 @@ input:focus {
 
 .hasError {
     border-color: tomato;
-    /*border-color: rgb(241, 168, 153);*/
 }
 
 .validated {
@@ -112,15 +111,16 @@ input:focus {
 .errorStyle {
     margin-bottom: 4px;
     padding: 2px 5px;
-    /*paddingBottom: 2;
-    paddingLeft: 5;
-    paddingRight: 5;*/
     border: 1px solid #f1a899; 
     color: #5f3f3f; 
     display: block;
     background: #fddfdf;
     border-radius: 5px;
     box-shadow: 5px 5px 10px grey;
+}
+
+.disabled {
+	background: dimgrey;
 }
 
 input[type="checkbox"],
@@ -136,8 +136,16 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+button:not(.disabled):hover {
     background: #184c62;
+}
+.btn-message {
+	display: inline;
+	font-size: 0.9em;
+	color: dimgrey;
+	margin: 2px;
+	padding: 0px 5px; 
+
 }
 
 .conflicting {
