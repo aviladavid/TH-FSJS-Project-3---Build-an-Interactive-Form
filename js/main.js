@@ -43,10 +43,13 @@ $form.change(() => {
     if (validateForm()) {
         $submitBtn.prop({ disabled: false });
         $submitBtn.removeClass('disabled');
+        $('.btn-message').remove();
     } else {
         $submitBtn.prop({ disabled: true });
         $submitBtn.addClass('disabled');
-        $submitBtn.after('<span class="btn-message">This button has been temporarily disabled. Fill in the form to enable it.</span>');
+        if (!$('.btn-message').length) {
+            $submitBtn.after('<span class="btn-message">Oops! This button has been temporarily disabled. Fix any errors to re-enable it.</span>');
+        }
     }
 });
 
@@ -298,9 +301,7 @@ $nameField.focusout(() => {
             $('.name-error2').remove();
             $('.name-error3').remove();
             $('.name-error4').remove();
-            if ($nameField.hasClass('validated')) {
-                $nameField.removeClass('validated');
-            }
+            $nameField.removeClass('validated');
             if ($nameField.hasClass('hasError') === false) {
                 $nameField.addClass('hasError');
             }
@@ -313,9 +314,7 @@ $nameField.focusout(() => {
             $('.name-error1').remove();
             $('.name-error3').remove();
             $('.name-error4').remove();
-            if ($nameField.hasClass('validated')) {
-                $nameField.removeClass('validated');
-            }
+            $nameField.removeClass('validated');
             if ($nameField.hasClass('hasError') === false) {
                 $nameField.addClass('hasError');
             }
@@ -328,9 +327,7 @@ $nameField.focusout(() => {
             $('.name-error1').remove();
             $('.name-error2').remove();
             $('.name-error4').remove();
-            if ($nameField.hasClass('validated')) {
-                $nameField.removeClass('validated');
-            }
+            $nameField.removeClass('validated');
             if ($nameField.hasClass('hasError') === false) {
                 $nameField.addClass('hasError');
             }
@@ -343,9 +340,7 @@ $nameField.focusout(() => {
             $('.name-error1').remove();
             $('.name-error2').remove();
             $('.name-error3').remove();
-            if ($nameField.hasClass('validated')) {
-                $nameField.removeClass('validated');
-            }
+            $nameField.removeClass('validated');
             if ($nameField.hasClass('hasError') === false) {
                 $nameField.addClass('hasError');
             }
