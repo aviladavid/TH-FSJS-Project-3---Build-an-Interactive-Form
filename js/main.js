@@ -30,14 +30,16 @@ $cvvField.attr('placeholder', 'i.e. 123');
 $zipField.attr('placeholder', 'i.e. 12345');
 $submitBtn.prop({ disabled: true });
 $submitBtn.addClass('disabled');
-$submitBtn.after('<span class="btn-message">This button has been temporarily disabled. Fill in the form to enable it.</span>');
+$submitBtn.after('<div id="error-div" class="errorStyle"><ul id="error-list" ></list></div>');
+$submitBtn.after('<span class="btn-message">The "Register" button has been temporarily disabled. Fill in the form or fix any errors in order to enable it.</span>');
 
 /******************
  * FORM BEHAVIOUR *
  ******************/
 $form.submit((e) => {
     e.preventDefault();
-})
+    console.log('Form submitted successfully!');
+});
 
 $form.change(() => {
     if (validateForm()) {
@@ -51,39 +53,51 @@ $form.change(() => {
             $submitBtn.after('<span class="btn-message">Oops! This button has been temporarily disabled. Fix any errors to re-enable it.</span>');
         }
     }
+
+    if (!$('#error-list li')[0]) {
+        $('#error-div').hide();
+    } else {
+        $('#error-div').show();
+    }
 });
+
 
 /*************
  * FUNCTIONS *
  *************/
 const generateErrorMessage = (errorTargetElement, errorMessage, customClassName) => {
     errorTargetElement.after("<span class='errorStyle " + customClassName + "'>" + errorMessage + "</span>");
-}
+};
+
+const appendToErrorList = (genericErrorClass, fieldName) => {
+    const $errorList = $('#error-list');
+    $errorList.append('<li class="' + genericErrorClass + '">There seems to be an error in the "' + fieldName + '" field!</li>');
+};
 
 const nameCheck = (userName) => {
     const regex = /^[a-zA-Z ]{2,30}$/;
     return regex.test(userName);
-}
+};
 
 const emailCheck = (userEmail) => {
     const regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return regex.test(userEmail);
-}
+};
 
 const creditCardNumberCheck = (creditCardNumber) => {
     const regex = /^[0-9]{13,16}$/;
     return regex.test(creditCardNumber);
-}
+};
 
 const zipCheck = (zipNumber) => {
     const regex = /^[0-9]{5}$/;
     return regex.test(zipNumber);
-}
+};
 
 const cvvCheck = (zipNumber) => {
     const regex = /^[0-9]{3}$/;
     return regex.test(zipNumber);
-}
+};
 
 const validateBasicInfo = () => {
     let isBasicInfoValid = false;
@@ -93,7 +107,7 @@ const validateBasicInfo = () => {
         isBasicInfoValid = true;
     }
     return isBasicInfoValid;
-}
+};
 
 const validatePaymentInfo = () => {
     let isPaymentInfoValid = false;
@@ -108,7 +122,7 @@ const validatePaymentInfo = () => {
         isPaymentInfoValid = true;
     }
     return isPaymentInfoValid;
-}
+};
 
 const validateForm = () => {
     let formValid = false;
@@ -119,7 +133,8 @@ const validateForm = () => {
         formValid = true;
     }
     return formValid;
-}
+};
+
 
 /***********************************************
  * SHOW/HIDE USER DEFINED JOB-ROLE INPUT FIELD *
@@ -269,8 +284,9 @@ $('#payment').change(() => {
 });
 
 /********************************************************************************************
- * FORM VALIDATION: if any of the following errors exists, the user will be prevented       *
- * from submitting the form.                                                                *
+ * FORM VALIDATION: if any of the below errors exists, the user is be prevented             *
+ * from submitting the form, a generic error is added below the "Register" button and a     *
+ * specific error added below the corresponding field.                                      *
  * Restrictions:                                                                            *
  *    - Name field can't be blank, names cant contain numbers or special characters and     *
  *      cannot have less than 2 character or more than 30.                                  *
@@ -282,7 +298,6 @@ $('#payment').change(() => {
  *          CVV code (3 digits, no letters or special characters)                           *
  ********************************************************************************************/
 
-
 /* NAME VALIDATION */
 /* Name errors tested: 
     CASE 1- Name field empty - class='name-error1'
@@ -290,13 +305,15 @@ $('#payment').change(() => {
     CASE 3- Name longer than 30 characters - class='name-error3'
     CASE 4- Name contains numbers or special characters - class='name-error4'
 */
-$nameField.focusout(() => {
+$nameField.keyup(() => {
     const $nameFieldValue = $nameField.val();
     const userName = nameCheck($nameFieldValue);
+
     if ($nameFieldValue.length === 0 && userName === false) { //CASE 1
-        if ($('.name-error1').length) {
-            $('.name-error1').effect('shake');
-        } else {
+        if (!$('.nameError').length) {
+            appendToErrorList('nameError', 'Name');
+        }
+        if (!$('.name-error1').length) {
             generateErrorMessage($nameField, 'Oops! looks like you forgot to tell us your name.', 'name-error1');
             $('.name-error2').remove();
             $('.name-error3').remove();
@@ -306,10 +323,12 @@ $nameField.focusout(() => {
                 $nameField.addClass('hasError');
             }
         }
+
     } else if ($nameFieldValue.length < 2 && userName === false) { // CASE 2
-        if ($('.name-error2').length) {
-            $('.name-error2').effect('shake');
-        } else {
+        if (!$('.nameError').length) {
+            appendToErrorList('nameError', 'Name');
+        }
+        if (!$('.name-error2').length) {
             generateErrorMessage($nameField, 'Sorry! we can only register names containing between 2 and 30 characters!', 'name-error2');
             $('.name-error1').remove();
             $('.name-error3').remove();
@@ -319,10 +338,12 @@ $nameField.focusout(() => {
                 $nameField.addClass('hasError');
             }
         }
+
     } else if ($nameFieldValue.length > 30 && userName === false) { // CASE 3
-        if ($('.name-error3').length) {
-            $('.name-error3').effect('shake');
-        } else {
+        if (!$('.nameError').length) {
+            appendToErrorList('nameError', 'Name');
+        }
+        if (!$('.name-error3').length) {
             generateErrorMessage($nameField, 'Sorry! we are unable to register names longer than 30 characters.', 'name-error3');
             $('.name-error1').remove();
             $('.name-error2').remove();
@@ -332,10 +353,12 @@ $nameField.focusout(() => {
                 $nameField.addClass('hasError');
             }
         }
-    } else if (userName === false) { // CASE 4
-        if ($('.name-error4').length) {
-            $('.name-error4').effect('shake');
-        } else {
+
+    } else if (!userName) { // CASE 4
+        if (!$('.nameError').length) {
+            appendToErrorList('nameError', 'Name');
+        }
+        if (!$('.name-error4').length) {
             generateErrorMessage($nameField, 'Sorry! we cannot register names containing numbers or special characters (i.e. +, -, &, *, /, $, etc.).', 'name-error4');
             $('.name-error1').remove();
             $('.name-error2').remove();
@@ -345,11 +368,13 @@ $nameField.focusout(() => {
                 $nameField.addClass('hasError');
             }
         }
+
     } else if (userName) { // VALIDATED
         $('.name-error1').remove();
         $('.name-error2').remove();
         $('.name-error3').remove();
         $('.name-error4').remove();
+        $('.nameError').remove();
         $nameField.removeClass('hasError');
         $nameField.addClass('validated');
     }
@@ -361,13 +386,15 @@ $emailField.keyup(() => {
     const userEmail = emailCheck($emailFieldValue);
     if (userEmail) {
         $('.email-error').remove();
+        $('.emailError').remove();
         $emailField.removeClass('hasError');
         $emailField.addClass('validated');
-
     } else {
-        if ($('.email-error').length) {
-            // do nothing for now :P 
-        } else {
+        if (!$('.emailError').length) {
+            appendToErrorList('emailError', 'Email');
+        }
+
+        if (!$('.email-error').length) {
             generateErrorMessage($emailField, 'Please enter your email in the following format: yourEmail@email.com', 'email-error');
             $emailField.addClass('hasError');
             $emailField.removeClass('validated');
@@ -381,14 +408,18 @@ const $priceTagElement = $('#price-tag');
 
 generateErrorMessage($priceTagElement, 'Please select at least one activity to be able to register.', 'activity-error');
 $('.activity-error').show();
+appendToErrorList('activityError', 'Activity Selection');
 
 $('.activities input').click(() => {
     if ($('.activities input:checked').length < 1) {
         $('.activity-error').show();
+        appendToErrorList('activityError', 'Activity Selection');
     } else {
         $('.activity-error').hide();
+        $('.activityError').remove();
     }
 });
+
 
 /* CREDIT CARD VALIDATION */
 /* CC number errors tested: 
@@ -397,13 +428,14 @@ $('.activities input').click(() => {
     CASE 3- CC number longer than 16 characters - class='cc-error3'
     CASE 4- CC number contains characters other than numbers - class='cc-error4'
 */
-$creditCardField.focusout(() => {
+$creditCardField.keyup(() => {
     const $creditCardFieldValue = $creditCardField.val();
     const userCreditCardNumber = creditCardNumberCheck($creditCardFieldValue);
     if ($creditCardFieldValue.length === 0 && userCreditCardNumber === false) { //CASE 1
-        if ($('.cc-error1').length) {
-            $('.cc-error1').effect('shake');
-        } else {
+        if (!$('.ccError').length) {
+            appendToErrorList('ccError', 'Credit Card Number');
+        }
+        if (!$('.cc-error1').length) {
             generateErrorMessage($creditCardField, 'Oops! looks like you forgot to tell us your credit card number.', 'cc-error1');
             $('.cc-error2').remove();
             $('.cc-error3').remove();
@@ -413,10 +445,12 @@ $creditCardField.focusout(() => {
                 $creditCardField.addClass('hasError');
             }
         }
+
     } else if ($creditCardFieldValue.length < 13 && userCreditCardNumber === false) { // CASE 2
-        if ($('.cc-error2').length) {
-            $('.cc-error2').effect('shake');
-        } else {
+        if (!$('.ccError').length) {
+            appendToErrorList('ccError', 'Credit Card Number');
+        }
+        if (!$('.cc-error2').length) {
             generateErrorMessage($creditCardField, 'Something went wrong! your credit card number must contain at least 13 digits.', 'cc-error2');
             $('.cc-error1').remove();
             $('.cc-error3').remove();
@@ -426,10 +460,12 @@ $creditCardField.focusout(() => {
                 $creditCardField.addClass('hasError');
             }
         }
+
     } else if ($creditCardFieldValue.length > 16 && userCreditCardNumber === false) { // CASE 3
-        if ($('.cc-error3').length) {
-            $('.cc-error3').effect('shake');
-        } else {
+        if (!$('.ccError').length) {
+            appendToErrorList('ccError', 'Credit Card Number');
+        }
+        if (!$('.cc-error3').length) {
             generateErrorMessage($creditCardField, 'Something went wrong! your credit card number cannot contain more than 16 digits.', 'cc-error3');
             $('.cc-error1').remove();
             $('.cc-error2').remove();
@@ -439,10 +475,12 @@ $creditCardField.focusout(() => {
                 $creditCardField.addClass('hasError');
             }
         }
+
     } else if (userCreditCardNumber === false) { // CASE 4
-        if ($('.cc-error4').length) {
-            $('.cc-error4').effect('shake');
-        } else {
+        if (!$('.ccError').length) {
+            appendToErrorList('ccError', 'Credit Card Number');
+        }
+        if (!$('.cc-error4').length) {
             generateErrorMessage($creditCardField, 'Something went wrong! your credit card number cannot contain letters or special characters (i.e. +, -, &, *, /, $, etc.).', 'cc-error4');
             $('.cc-error1').remove();
             $('.cc-error2').remove();
@@ -452,11 +490,13 @@ $creditCardField.focusout(() => {
                 $creditCardField.addClass('hasError');
             }
         }
+
     } else if (userCreditCardNumber) { // VALIDATED
         $('.cc-error1').remove();
         $('.cc-error2').remove();
         $('.cc-error3').remove();
         $('.cc-error4').remove();
+        $('.ccError').remove();
         $creditCardField.removeClass('hasError');
         $creditCardField.addClass('validated');
     }
@@ -467,13 +507,15 @@ $creditCardField.focusout(() => {
     CASE 1- Zip field empty - class='zip-error1'
     CASE 2- zipCheck === false - class='zip-error2'
 */
-$zipField.focusout(() => {
+$zipField.keyup(() => {
     const $zipFieldValue = $zipField.val();
     const userZip = zipCheck($zipFieldValue);
+
     if ($zipFieldValue.length === 0 && userZip === false) { //CASE 1
-        if ($('.zip-error1').length) {
-            $('.zip-error1').effect('shake');
-        } else {
+        if (!$('.zipError').length) {
+            appendToErrorList('zipError', 'Zip Number');
+        }
+        if (!$('.zip-error1').length) {
             generateErrorMessage($zipField, 'Please enter your ZIP code.', 'zip-error1');
             $('.zip-error2').remove();
             $zipField.removeClass('validated');
@@ -481,10 +523,12 @@ $zipField.focusout(() => {
                 $zipField.addClass('hasError');
             }
         }
+
     } else if (userZip === false) { // CASE 2
-        if ($('.zip-error2').length) {
-            $('.zip-error2').effect('shake');
-        } else {
+        if (!$('.zipError').length) {
+            appendToErrorList('zipError', 'Zip Number');
+        }
+        if (!$('.zip-error2').length) {
             generateErrorMessage($zipField, 'ZIP codes contain exactly 5 digits. No letters or special characters are allowed.', 'zip-error2');
             $('.zip-error1').remove();
             $zipField.removeClass('validated');
@@ -492,9 +536,11 @@ $zipField.focusout(() => {
                 $zipField.addClass('hasError');
             }
         }
+
     } else if (userZip) { // VALIDATED
         $('.zip-error1').remove();
         $('.zip-error2').remove();
+        $('.zipError').remove();
         $zipField.removeClass('hasError');
         $zipField.addClass('validated');
     }
@@ -505,13 +551,14 @@ $zipField.focusout(() => {
     CASE 1- CVV field empty - class='cvv-error1'
     CASE 2- cvvCheck === false - class='cvv-error2'
 */
-$cvvField.focusout(() => {
+$cvvField.keyup(() => {
     const $cvvFieldValue = $cvvField.val();
     const userCvvNumber = cvvCheck($cvvFieldValue);
     if ($cvvFieldValue.length === 0 && userCvvNumber === false) { //CASE 1
-        if ($('.cvv-error1').length) {
-            $('.cvv-error1').effect('shake');
-        } else {
+        if (!$('.cvvError').length) {
+            appendToErrorList('cvvError', 'CVV Number');
+        }
+        if (!$('.cvv-error1').length) {
             generateErrorMessage($cvvField, 'Please enter your CVV code.', 'cvv-error1');
             $('.cvv-error2').remove();
             $cvvField.removeClass('validated');
@@ -520,9 +567,11 @@ $cvvField.focusout(() => {
             }
         }
     } else if (userCvvNumber === false) { // CASE 2
-        if ($('.cvv-error2').length) {
-            $('.cvv-error2').effect('shake');
-        } else {
+        if (!$('.cvvError').length) {
+            appendToErrorList('cvvError', 'CVV Number');
+            console.log('CVV regex-error added correctly!');
+        }
+        if (!$('.cvv-error2').length) {
             generateErrorMessage($cvvField, 'CVV codes contain exactly 3 digits. No letters or special characters are allowed.', 'cvv-error2');
             $('.cvv-error1').remove();
             $cvvField.removeClass('validated');
@@ -533,6 +582,7 @@ $cvvField.focusout(() => {
     } else if (userCvvNumber) { // VALIDATED
         $('.cvv-error1').remove();
         $('.cvv-error2').remove();
+        $('.cvvError').remove();
         $cvvField.removeClass('hasError');
         $cvvField.addClass('validated');
     }

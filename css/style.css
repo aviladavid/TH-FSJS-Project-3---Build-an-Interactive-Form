@@ -140,7 +140,7 @@ button:not(.disabled):hover {
     background: #184c62;
 }
 .btn-message {
-	display: inline;
+	display: block;
 	font-size: 0.9em;
 	color: dimgrey;
 	margin: 2px;
