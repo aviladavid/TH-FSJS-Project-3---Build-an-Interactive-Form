@@ -176,6 +176,7 @@ $('#design').change(() => {
         $('#color option[value="cornflowerblue"]').hide();
         $('#color option[value="darkslategrey"]').hide();
         $('#color option[value="gold"]').hide();
+        $('#select-theme').hide();
     } else {
         $('#color').fadeOut(500);
         $('label[for="color"]').fadeOut(500);
@@ -314,7 +315,7 @@ $nameField.keyup(() => {
             appendToErrorList('nameError', 'Name');
         }
         if (!$('.name-error1').length) {
-            generateErrorMessage($nameField, 'Oops! looks like you forgot to tell us your name.', 'name-error1');
+            generateErrorMessage($nameField, 'Don\'t forget to tell us your name.', 'name-error1');
             $('.name-error2').remove();
             $('.name-error3').remove();
             $('.name-error4').remove();
