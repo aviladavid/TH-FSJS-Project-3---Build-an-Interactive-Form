@@ -31,7 +31,7 @@ $zipField.attr('placeholder', 'i.e. 12345');
 $submitBtn.prop({ disabled: true });
 $submitBtn.addClass('disabled');
 $submitBtn.after('<div id="error-div" class="errorStyle"><ul id="error-list" ></list></div>');
-$submitBtn.after('<span class="btn-message">The "Register" button has been temporarily disabled. Fill in the form or fix any errors in order to enable it.</span>');
+$submitBtn.after('<span class="btn-message">The "Register" button has been temporarily disabled. Fill in any missing information in order to enable it.</span>');
 
 /******************
  * FORM BEHAVIOUR *
@@ -50,7 +50,7 @@ $form.change(() => {
         $submitBtn.prop({ disabled: true });
         $submitBtn.addClass('disabled');
         if (!$('.btn-message').length) {
-            $submitBtn.after('<span class="btn-message">Oops! This button has been temporarily disabled. Fix any errors to re-enable it.</span>');
+            $submitBtn.after('<span class="btn-message">The "Register" button has been temporarily disabled. Fill in any missing information in order to enable it.</span>');
         }
     }
 
