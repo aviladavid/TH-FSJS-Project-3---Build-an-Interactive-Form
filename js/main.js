@@ -18,6 +18,8 @@ const $creditCardField = $('#cc-num');
 const $zipField = $('#zip');
 const $cvvField = $('#cvv');
 const $submitBtn = $('#submit-button');
+const $bitcoinPayment = $('#payment-fieldset div:nth-last-child(1)');
+const $paypalPayment = $('#payment-fieldset div:nth-last-child(2)');
 
 /***************************
  * INITIAL FORM FORMATTING *
@@ -32,6 +34,8 @@ $submitBtn.prop({ disabled: true });
 $submitBtn.addClass('disabled');
 $submitBtn.after('<div id="error-div" class="errorStyle"><ul id="error-list" ></list></div>');
 $submitBtn.after('<span class="btn-message">The "Register" button has been temporarily disabled. Fill in any missing information in order to enable it.</span>');
+$bitcoinPayment.hide();
+$paypalPayment.hide();
 
 /******************
  * FORM BEHAVIOUR *
