@@ -37,14 +37,24 @@ $submitBtn.after('<span class="btn-message">The "Register" button has been tempo
 $bitcoinPayment.hide();
 $paypalPayment.hide();
 
+$(document).ready(() => {
+    appendToErrorList('nameError', 'Name');
+    appendToErrorList('emailError', 'Email');
+    appendToErrorList('activityError', 'Register for Activities');
+    appendToErrorList('ccError', 'Credit Card Number');
+    appendToErrorList('zipError', 'ZIP code');
+    appendToErrorList('cvvError', 'CVV number');
+});
+
 /******************
  * FORM BEHAVIOUR *
  ******************/
-$form.submit((e) => {
+/*$form.submit((e) => {
     e.preventDefault();
     console.log('Form submitted successfully!');
-});
+});*/
 
+// ENABLE/DISABLE SUBMIT BUTTON BASED ON FORM VALIDATION STATUS
 $form.change(() => {
     if (validateForm()) {
         $submitBtn.prop({ disabled: false });
@@ -58,13 +68,13 @@ $form.change(() => {
         }
     }
 
+    // HIDE BOTTOM ERROR LIST WHEN EMPTY
     if (!$('#error-list li')[0]) {
         $('#error-div').hide();
     } else {
         $('#error-div').show();
     }
 });
-
 
 /*************
  * FUNCTIONS *
@@ -75,7 +85,7 @@ const generateErrorMessage = (errorTargetElement, errorMessage, customClassName)
 
 const appendToErrorList = (genericErrorClass, fieldName) => {
     const $errorList = $('#error-list');
-    $errorList.append('<li class="' + genericErrorClass + '">There seems to be an error in the "' + fieldName + '" field!</li>');
+    $errorList.append('<li class="' + genericErrorClass + '">Information in the "' + fieldName + '" field is missing or contains an error!</li>');
 };
 
 const nameCheck = (userName) => {
@@ -97,6 +107,7 @@ const zipCheck = (zipNumber) => {
     const regex = /^[0-9]{5}$/;
     return regex.test(zipNumber);
 };
+
 
 const cvvCheck = (zipNumber) => {
     const regex = /^[0-9]{3}$/;
@@ -275,16 +286,25 @@ $('#payment').change(() => {
         $('#payment-fieldset div:nth-last-child(2)').fadeIn();
         $('#credit-card').hide();
         $('#payment-fieldset div:nth-last-child(1)').hide();
+        $('.ccError').remove();
+        $('.zipError').remove();
+        $('.cvvError').remove();
 
     } else if ($('#payment').val() === 'credit_card') {
         $('#credit-card').fadeIn();
         $('#payment-fieldset div:nth-last-child(1)').hide();
         $('#payment-fieldset div:nth-last-child(2)').hide();
+        appendToErrorList('ccError', 'Credit Card Number');
+        appendToErrorList('zipError', 'ZIP code');
+        appendToErrorList('cvvError', 'CVV number');
 
     } else if ($('#payment').val() === 'bitcoin') {
         $('#payment-fieldset div:nth-last-child(1)').fadeIn();
         $('#credit-card').hide();
         $('#payment-fieldset div:nth-last-child(2)').hide();
+        $('.ccError').remove();
+        $('.zipError').remove();
+        $('.cvvError').remove();
     }
 });
 
@@ -310,7 +330,7 @@ $('#payment').change(() => {
     CASE 3- Name longer than 30 characters - class='name-error3'
     CASE 4- Name contains numbers or special characters - class='name-error4'
 */
-$nameField.keyup(() => {
+$nameField.focusout(() => {
     const $nameFieldValue = $nameField.val();
     const userName = nameCheck($nameFieldValue);
 
@@ -334,7 +354,7 @@ $nameField.keyup(() => {
             appendToErrorList('nameError', 'Name');
         }
         if (!$('.name-error2').length) {
-            generateErrorMessage($nameField, 'Sorry! we can only register names containing between 2 and 30 characters!', 'name-error2');
+            generateErrorMessage($nameField, 'We can only register names containing between 2 and 30 characters!', 'name-error2');
             $('.name-error1').remove();
             $('.name-error3').remove();
             $('.name-error4').remove();
@@ -349,7 +369,7 @@ $nameField.keyup(() => {
             appendToErrorList('nameError', 'Name');
         }
         if (!$('.name-error3').length) {
-            generateErrorMessage($nameField, 'Sorry! we are unable to register names longer than 30 characters.', 'name-error3');
+            generateErrorMessage($nameField, 'We are unable to register names longer than 30 characters.', 'name-error3');
             $('.name-error1').remove();
             $('.name-error2').remove();
             $('.name-error4').remove();
@@ -364,7 +384,7 @@ $nameField.keyup(() => {
             appendToErrorList('nameError', 'Name');
         }
         if (!$('.name-error4').length) {
-            generateErrorMessage($nameField, 'Sorry! we cannot register names containing numbers or special characters (i.e. +, -, &, *, /, $, etc.).', 'name-error4');
+            generateErrorMessage($nameField, 'We cannot register names containing numbers or special characters (i.e. +, -, &, *, /, $, etc.).', 'name-error4');
             $('.name-error1').remove();
             $('.name-error2').remove();
             $('.name-error3').remove();
@@ -413,7 +433,6 @@ const $priceTagElement = $('#price-tag');
 
 generateErrorMessage($priceTagElement, 'Please select at least one activity to be able to register.', 'activity-error');
 $('.activity-error').show();
-appendToErrorList('activityError', 'Activity Selection');
 
 $('.activities input').click(() => {
     if ($('.activities input:checked').length < 1) {
@@ -456,7 +475,7 @@ $creditCardField.keyup(() => {
             appendToErrorList('ccError', 'Credit Card Number');
         }
         if (!$('.cc-error2').length) {
-            generateErrorMessage($creditCardField, 'Something went wrong! your credit card number must contain at least 13 digits.', 'cc-error2');
+            generateErrorMessage($creditCardField, 'Your credit card number must contain at least 13 digits.', 'cc-error2');
             $('.cc-error1').remove();
             $('.cc-error3').remove();
             $('.cc-error4').remove();
@@ -471,7 +490,7 @@ $creditCardField.keyup(() => {
             appendToErrorList('ccError', 'Credit Card Number');
         }
         if (!$('.cc-error3').length) {
-            generateErrorMessage($creditCardField, 'Something went wrong! your credit card number cannot contain more than 16 digits.', 'cc-error3');
+            generateErrorMessage($creditCardField, 'Your credit card number cannot contain more than 16 digits.', 'cc-error3');
             $('.cc-error1').remove();
             $('.cc-error2').remove();
             $('.cc-error4').remove();
@@ -486,7 +505,7 @@ $creditCardField.keyup(() => {
             appendToErrorList('ccError', 'Credit Card Number');
         }
         if (!$('.cc-error4').length) {
-            generateErrorMessage($creditCardField, 'Something went wrong! your credit card number cannot contain letters or special characters (i.e. +, -, &, *, /, $, etc.).', 'cc-error4');
+            generateErrorMessage($creditCardField, 'Your credit card number cannot contain letters or special characters (i.e. +, -, &, *, /, $, etc.).', 'cc-error4');
             $('.cc-error1').remove();
             $('.cc-error2').remove();
             $('.cc-error3').remove();
