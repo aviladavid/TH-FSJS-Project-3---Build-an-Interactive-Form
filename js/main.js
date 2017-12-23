@@ -432,15 +432,16 @@ $emailField.keyup(() => {
 /* Error message is attached to the price tag element */
 const $priceTagElement = $('#price-tag');
 
-generateErrorMessage($priceTagElement, 'Please select at least one activity to be able to register.', 'activity-error');
-$('.activity-error').show();
+// generateErrorMessage($priceTagElement, 'Please select at least one activity to be able to register.', 'activity-error');
+// $('.activity-error').show();
 
 $('.activities input').click(() => {
     if ($('.activities input:checked').length < 1) {
+        generateErrorMessage($priceTagElement, 'Please select at least one activity to be able to register.', 'activity-error');
         $('.activity-error').show();
         appendToErrorList('activityError', 'Activity Selection');
     } else {
-        $('.activity-error').hide();
+        $('.activity-error').remove();
         $('.activityError').remove();
     }
 });
