@@ -49,10 +49,11 @@ $(document).ready(() => {
 /******************
  * FORM BEHAVIOUR *
  ******************/
-/*$form.submit((e) => {
-    e.preventDefault();
-    console.log('Form submitted successfully!');
-});*/
+$form.submit((e) => {
+    // e.preventDefault();
+    console.log('The form has been submitted successfully: ');
+
+});
 
 // ENABLE/DISABLE SUBMIT BUTTON BASED ON FORM VALIDATION STATUS
 $form.change(() => {
@@ -85,7 +86,7 @@ const generateErrorMessage = (errorTargetElement, errorMessage, customClassName)
 
 const appendToErrorList = (genericErrorClass, fieldName) => {
     const $errorList = $('#error-list');
-    $errorList.append('<li class="' + genericErrorClass + '">Information in the "' + fieldName + '" field is missing or contains an error!</li>');
+    $errorList.append('<li class="' + genericErrorClass + '">"' + fieldName + '" information missing or contains an error!</li>');
 };
 
 const nameCheck = (userName) => {
