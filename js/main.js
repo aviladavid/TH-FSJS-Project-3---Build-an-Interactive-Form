@@ -30,11 +30,8 @@ $emailField.attr('placeholder', 'yourEmail@email.com');
 $creditCardField.attr('placeholder', 'Must be 13 to 16 digits long');
 $cvvField.attr('placeholder', 'i.e. 123');
 $zipField.attr('placeholder', 'i.e. 12345');
-// $submitBtn.prop({ disabled: true });
-// $submitBtn.addClass('disabled');
 $submitBtn.after('<div id="error-div" class="errorStyle"><ul id="error-list" ></list></div>');
 $('#error-div').hide();
-// $submitBtn.after('<span class="btn-message">The "Register" button has been temporarily disabled. Fill in any missing information in order to enable it.</span>');
 $bitcoinPayment.hide();
 $paypalPayment.hide();
 
@@ -56,7 +53,6 @@ $form.submit((e) => {
         $('#error-div').show();
     } else {
         console.log('The form has been submitted successfully: ');
-
     }
 });
 
@@ -65,28 +61,6 @@ $form.keyup(() => {
         $('#error-div').hide();
     }
 });
-
-// ENABLE/DISABLE SUBMIT BUTTON BASED ON FORM VALIDATION STATUS
-// $form.change(() => {
-//     if (validateForm()) {
-//         $submitBtn.prop({ disabled: false });
-//         $submitBtn.removeClass('disabled');
-//         $('.btn-message').remove();
-//     } else {
-//         $submitBtn.prop({ disabled: true });
-//         $submitBtn.addClass('disabled');
-//         if (!$('.btn-message').length) {
-//             $submitBtn.after('<span class="btn-message">The "Register" button has been temporarily disabled. Fill in any missing information in order to enable it.</span>');
-//         }
-//     }
-
-//     // HIDE BOTTOM ERROR LIST WHEN EMPTY
-//     if (!$('#error-list li')[0]) {
-//         $('#error-div').hide();
-//     } else {
-//         $('#error-div').show();
-//     }
-// });
 
 /*************
  * FUNCTIONS *
@@ -442,9 +416,6 @@ $emailField.keyup(() => {
 /* ACTIVITIES VALIDATION */
 /* Error message is attached to the price tag element */
 const $priceTagElement = $('#price-tag');
-
-// generateErrorMessage($priceTagElement, 'Please select at least one activity to be able to register.', 'activity-error');
-// $('.activity-error').show();
 
 $('.activities input').click(() => {
     if ($('.activities input:checked').length < 1) {
