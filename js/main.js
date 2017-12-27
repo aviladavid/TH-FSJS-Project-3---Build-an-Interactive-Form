@@ -30,10 +30,11 @@ $emailField.attr('placeholder', 'yourEmail@email.com');
 $creditCardField.attr('placeholder', 'Must be 13 to 16 digits long');
 $cvvField.attr('placeholder', 'i.e. 123');
 $zipField.attr('placeholder', 'i.e. 12345');
-$submitBtn.prop({ disabled: true });
-$submitBtn.addClass('disabled');
+// $submitBtn.prop({ disabled: true });
+// $submitBtn.addClass('disabled');
 $submitBtn.after('<div id="error-div" class="errorStyle"><ul id="error-list" ></list></div>');
-$submitBtn.after('<span class="btn-message">The "Register" button has been temporarily disabled. Fill in any missing information in order to enable it.</span>');
+$('#error-div').hide();
+// $submitBtn.after('<span class="btn-message">The "Register" button has been temporarily disabled. Fill in any missing information in order to enable it.</span>');
 $bitcoinPayment.hide();
 $paypalPayment.hide();
 
@@ -50,32 +51,42 @@ $(document).ready(() => {
  * FORM BEHAVIOUR *
  ******************/
 $form.submit((e) => {
-    // e.preventDefault();
-    console.log('The form has been submitted successfully: ');
+    if (!validateForm()) {
+        e.preventDefault();
+        $('#error-div').show();
+    } else {
+        console.log('The form has been submitted successfully: ');
 
+    }
+});
+
+$form.keyup(() => {
+    if (!$('#error-list li')[0]) {
+        $('#error-div').hide();
+    }
 });
 
 // ENABLE/DISABLE SUBMIT BUTTON BASED ON FORM VALIDATION STATUS
-$form.change(() => {
-    if (validateForm()) {
-        $submitBtn.prop({ disabled: false });
-        $submitBtn.removeClass('disabled');
-        $('.btn-message').remove();
-    } else {
-        $submitBtn.prop({ disabled: true });
-        $submitBtn.addClass('disabled');
-        if (!$('.btn-message').length) {
-            $submitBtn.after('<span class="btn-message">The "Register" button has been temporarily disabled. Fill in any missing information in order to enable it.</span>');
-        }
-    }
+// $form.change(() => {
+//     if (validateForm()) {
+//         $submitBtn.prop({ disabled: false });
+//         $submitBtn.removeClass('disabled');
+//         $('.btn-message').remove();
+//     } else {
+//         $submitBtn.prop({ disabled: true });
+//         $submitBtn.addClass('disabled');
+//         if (!$('.btn-message').length) {
+//             $submitBtn.after('<span class="btn-message">The "Register" button has been temporarily disabled. Fill in any missing information in order to enable it.</span>');
+//         }
+//     }
 
-    // HIDE BOTTOM ERROR LIST WHEN EMPTY
-    if (!$('#error-list li')[0]) {
-        $('#error-div').hide();
-    } else {
-        $('#error-div').show();
-    }
-});
+//     // HIDE BOTTOM ERROR LIST WHEN EMPTY
+//     if (!$('#error-list li')[0]) {
+//         $('#error-div').hide();
+//     } else {
+//         $('#error-div').show();
+//     }
+// });
 
 /*************
  * FUNCTIONS *
