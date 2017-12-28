@@ -51,6 +51,44 @@ $form.submit((e) => {
     if (!validateForm()) {
         e.preventDefault();
         $('#error-div').show();
+        if ('.nameError') {
+            console.log('nameError exists');
+            if ($nameField.hasClass('hasError') === false) {
+                $nameField.addClass('hasError');
+            }
+        }
+        if ('.emailError') {
+            console.log('emailError exists');
+            if ($emailField.hasClass('hasError') === false) {
+                $emailField.addClass('hasError');
+            }
+        }
+        if ('.activityError') {
+            console.log('activityError exists');
+            if (!$('.activity-error').length && $('.activities input:checked').length < 1) {
+                generateErrorMessage($priceTagElement, 'Please select at least one activity to be able to register.', 'activity-error');
+                $('.activity-error').show();
+            }
+
+        }
+        if ('.ccError') {
+            console.log('ccError exists');
+            if ($creditCardField.hasClass('hasError') === false) {
+                $creditCardField.addClass('hasError');
+            }
+        }
+        if ('.cvvError') {
+            console.log('cvvError exists');
+            if ($cvvField.hasClass('hasError') === false) {
+                $cvvField.addClass('hasError');
+            }
+        }
+        if ('.zipError') {
+            console.log('zipError exists');
+            if ($zipField.hasClass('hasError') === false) {
+                $zipField.addClass('hasError');
+            }
+        }
     } else {
         console.log('The form has been submitted successfully: ');
     }
@@ -419,7 +457,9 @@ const $priceTagElement = $('#price-tag');
 
 $('.activities input').click(() => {
     if ($('.activities input:checked').length < 1) {
-        generateErrorMessage($priceTagElement, 'Please select at least one activity to be able to register.', 'activity-error');
+        if (!$('.activity-error').length) {
+            generateErrorMessage($priceTagElement, 'Please select at least one activity to be able to register.', 'activity-error');
+        }
         $('.activity-error').show();
         appendToErrorList('activityError', 'Activity Selection');
     } else {
